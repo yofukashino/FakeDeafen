@@ -1,18 +1,19 @@
 {
-  "id": "dev.replugged.PluginTemplate",
-  "name": "Plugin Template",
-  "description": "A plugin template",
+  "id": "Tharki.FakeDeafen",
+  "name": "FakeDeafen",
+  "description": "Fake your audio status, to make it look like you are muted or deafened from other's perspective when you're not.",
   "author": {
-    "name": "replugged",
-    "discordID": "1000992611840049192",
-    "github": "replugged-org"
+    "name": "Ahlawat",
+    "discordID": "1025214794766221384",
+    "github": "Tharki-God"
   },
-  "version": "1.0.0",
+  "version": "0.9.0",
   "updater": {
     "type": "github",
-    "id": "replugged-org/plugin-template"
+    "id": "Tharki-God/FakeDeafen"
   },
   "license": "MIT",
   "type": "replugged-plugin",
-  "renderer": "src/index.ts"
+  "renderer": "src/index.ts",
+  "plaintextPatches": "src/plaintextPatches.ts"
 }

@@ -1,26 +1,24 @@
-import { Injector, Logger, webpack } from "replugged";
+import { Injector, Logger, common, components, settings } from "replugged";
+import { defaultSettings } from "./lib/consts";
+import "./style.css";
+import { registerSettings } from "./Components/Settings";
+export const PluginInjector = new Injector();
+export const PluginLogger = Logger.plugin("FakeDeafen");
+export const SettingValues = await settings.init("Tharki.FakeDeafen", defaultSettings);
+export const { toast: Toasts, fluxDispatcher: FluxDispatcher } = common;
+export const { ContextMenu } = components;
+export const CurrentlyPressed = new Map();
+import { applyInjections } from "./patches/index";
+import { addListeners, removeListeners } from "./listeners/index";
 
-const inject = new Injector();
-const logger = Logger.plugin("PluginTemplate");
+export const start = (): void => {
+  registerSettings();
+  applyInjections();
+  addListeners();
+};
 
-export async function start(): Promise<void> {
-  const typingMod = await webpack.waitForModule<{
-    startTyping: (channelId: string) => void;
-  }>(webpack.filters.byProps("startTyping"));
-  const getChannelMod = await webpack.waitForModule<{
-    getChannel: (id: string) => {
-      name: string;
-    };
-  }>(webpack.filters.byProps("getChannel"));
-
-  if (typingMod && getChannelMod) {
-    inject.instead(typingMod, "startTyping", ([channel]) => {
-      const channelObj = getChannelMod.getChannel(channel);
-      logger.log(`Typing prevented! Channel: #${channelObj?.name ?? "unknown"} (${channel}).`);
-    });
-  }
-}
-
-export function stop(): void {
-  inject.uninjectAll();
-}
+export const stop = (): void => {
+  PluginInjector.uninjectAll();
+  removeListeners();
+};
+export { Settings } from "./Components/Settings.jsx";
