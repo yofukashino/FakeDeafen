@@ -1,5 +1,5 @@
 import { common, util } from "replugged";
-import { PluginInjector, SettingValues } from "../index";
+import { PluginInjector, SettingValues, isUpdatingStatus } from "../index";
 import {
   AccountDetailsClasses,
   MediaEngineActions,
@@ -122,7 +122,16 @@ export const forceUpdate = (element: HTMLElement): void => {
 export const sleep = (ms: number): Promise<void> => {
   return new Promise((resolve) => setTimeout(resolve, ms));
 };
+export const waitForUpdate = new Promise<void>((resolve) => {
+  const checkUpdateing = (): void => {
+    if (!isUpdatingStatus?.size) {
+      resolve();
+    } else setTimeout(checkUpdateing, 100);
+  };
+  checkUpdateing();
+});
 export const updateSoundStatus = async (): Promise<void> => {
+  await waitForUpdate;
   const { state: NotificationSettingsState } = NotificationSettingsStore.__getLocalVars();
   const toToggle = ["mute", "unmute"].filter(
     (m: string): boolean => !NotificationSettingsStore.isSoundDisabled(m),
@@ -134,6 +143,7 @@ export const updateSoundStatus = async (): Promise<void> => {
   NotificationSettingsState.disabledSounds = NotificationSettingsState.disabledSounds.filter(
     (m: string): boolean => toToggle.includes(m),
   );
+  isUpdatingStatus.clear();
 };
 export const toggleSoundStatus = (enabled: boolean): void => {
   if (SettingValues.get("playAudio", defaultSettings.playAudio))

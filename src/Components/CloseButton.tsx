@@ -2,15 +2,18 @@ import { common } from "replugged";
 import * as Types from "../types";
 const { React } = common;
 export class CloseButton extends React.Component<Types.CloseButtonProps> {
+  constructor(props: Types.CloseButtonProps) {
+    super(props);
+    props.size = props.size || "16px";
+  }
   render() {
-    const size = this.props.size || "16px";
     return React.createElement(
       "svg",
       {
         className: this.props.className || "",
         fill: "currentColor",
         viewBox: "0 0 24 24",
-        style: { width: size, height: size },
+        style: { width: this.props.size, height: this.props.size },
         onClick: this.props.onClick,
       },
       React.createElement("path", {

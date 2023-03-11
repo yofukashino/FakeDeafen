@@ -1,7 +1,7 @@
-import { PluginInjector, SettingValues } from "../index";
+import { ContextMenuApi, PluginInjector, SettingValues } from "../index";
 import { AccountDetails, PanelButton } from "../lib/requiredModules";
 import { defaultSettings } from "../lib/consts";
-import { openFakeDeafenContextMenu } from "../Components/ContextMenu";
+import { FakeDeafenContextMenu } from "../Components/ContextMenu";
 import * as Icons from "../Components/Icons";
 import * as Utils from "../lib/utils";
 import * as Types from "../types";
@@ -35,7 +35,12 @@ export const patchPanelButton = (): void => {
       children.unshift(
         <PanelButton
           {...{
-            onContextMenu: openFakeDeafenContextMenu,
+            onContextMenu: (event) =>
+              ContextMenuApi.open(event, ((e: Types.ContextMenuArgs) => (
+                <FakeDeafenContextMenu
+                  {...Object.assign({}, e, { onClose: ContextMenuApi.close })}
+                />
+              )) as unknown as Types.ContextMenu),
             icon: () => (enabled ? Icon : DisabledIcon),
             tooltipText: `${enabled ? "Unfake" : "Fake"} VC Status`,
             onClick: () => {

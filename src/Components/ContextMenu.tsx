@@ -1,14 +1,13 @@
-import { common, components } from "replugged";
+import { components } from "replugged";
 import { SettingValues } from "../index";
 import { defaultSettings } from "../lib/consts";
 import * as Utils from "../lib/utils";
 import * as Types from "../types";
-const { contextMenu: ContextMenuApi } = common;
 const {
   ContextMenu: { MenuCheckboxItem, ContextMenu, MenuSeparator, MenuItem },
 } = components;
 
-const FakeDeafenContextMenu = (props: Types.ExtendedContextMenuArgs) => {
+export const FakeDeafenContextMenu = (props: Types.ExtendedContextMenuArgs) => {
   const { value: muteValue, onChange: muteOnChange } = Utils.useSetting(
     SettingValues,
     "soundStatus.mute",
@@ -60,7 +59,3 @@ const FakeDeafenContextMenu = (props: Types.ExtendedContextMenuArgs) => {
     </ContextMenu>
   );
 };
-export const openFakeDeafenContextMenu = (event) =>
-  ContextMenuApi.open(event, ((e: Types.ContextMenuArgs) => (
-    <FakeDeafenContextMenu {...Object.assign({}, e, { onClose: ContextMenuApi.close })} />
-  )) as unknown as Types.ContextMenu);

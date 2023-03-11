@@ -1,7 +1,7 @@
 import { webpack } from "replugged";
-import { ContextMenu, PluginInjector, SettingValues } from "../index";
+import { ContextMenu, ContextMenuApi, PluginInjector, SettingValues } from "../index";
 import { Menu, StatusPickerClasses } from "../lib/requiredModules";
-import { openFakeDeafenContextMenu } from "../Components/ContextMenu";
+import { FakeDeafenContextMenu } from "../Components/ContextMenu";
 import { defaultSettings } from "../lib/consts";
 import * as Icons from "../Components/Icons";
 import * as Utils from "../lib/utils";
@@ -58,7 +58,12 @@ export const patchStatusPicker = (): void => {
             render: () => (
               <div
                 {...{
-                  onContextMenu: openFakeDeafenContextMenu,
+                  onContextMenu: (event) =>
+                    ContextMenuApi.open(event, ((e: Types.ContextMenuArgs) => (
+                      <FakeDeafenContextMenu
+                        {...Object.assign({}, e, { onClose: ContextMenuApi.close })}
+                      />
+                    )) as unknown as Types.ContextMenu),
                   className: StatusPickerClasses.statusItem,
                   "aria-label": `${enabled ? "Unfake" : "Fake"} VC Status`,
                 }}>
