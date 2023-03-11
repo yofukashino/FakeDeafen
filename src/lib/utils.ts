@@ -142,7 +142,7 @@ export const updateSoundStatus = async (): Promise<void> => {
   await sleep(100);
   await MediaEngineActions.toggleSelfMute();
   NotificationSettingsState.disabledSounds = NotificationSettingsState.disabledSounds.filter(
-    (m: string): boolean => toToggle.includes(m),
+    (m: string): boolean => !toToggle.includes(m),
   );
   isUpdatingStatus.clear();
 };
