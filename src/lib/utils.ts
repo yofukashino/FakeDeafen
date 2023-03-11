@@ -132,6 +132,7 @@ export const waitForUpdate = new Promise<void>((resolve) => {
 });
 export const updateSoundStatus = async (): Promise<void> => {
   await waitForUpdate;
+  isUpdatingStatus.add(isUpdatingStatus?.size + 1);
   const { state: NotificationSettingsState } = NotificationSettingsStore.__getLocalVars();
   const toToggle = ["mute", "unmute"].filter(
     (m: string): boolean => !NotificationSettingsStore.isSoundDisabled(m),
