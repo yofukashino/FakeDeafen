@@ -5,7 +5,7 @@ export default [
     find: "isCopiedStreakGodlike",
     replacements: [
       {
-        match: /([\w+]\.[\w+]\([\w+],\{default:\(\)=>[\w+]+)(\}\))/,
+        match: /([\w+]\.[\w+]\([\w+],\{default:\(\)=>[\w\d!@#$%^&*)(+=._-]+)(\}\))/,
         replace: `$1,AccountDetails: () => accountDetails$2`,
       },
       {
