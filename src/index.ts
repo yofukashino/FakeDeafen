@@ -10,6 +10,7 @@ export const {
   toast: Toasts,
   fluxDispatcher: FluxDispatcher,
   contextMenu: ContextMenuApi,
+  lodash,
 } = common;
 export const { ContextMenu } = components;
 export const CurrentlyPressed = new Map();

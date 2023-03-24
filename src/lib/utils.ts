@@ -1,5 +1,5 @@
 import { common, util } from "replugged";
-import { PluginInjector, SettingValues, isUpdatingStatus } from "../index";
+import { PluginInjector, SettingValues, isUpdatingStatus, lodash } from "../index";
 import {
   AccountDetailsClasses,
   MediaEngineActions,
@@ -7,7 +7,6 @@ import {
   SoundUtils,
 } from "./requiredModules";
 import { Sounds, defaultSettings } from "./consts";
-import lodash from "lodash";
 import * as Types from "../types";
 const { React } = common;
 
