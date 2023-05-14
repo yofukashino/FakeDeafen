@@ -1,78 +1,68 @@
 import { common, components } from "replugged";
 import { KeybindRecorder } from "../lib/requiredModules";
-import { CloseButton } from "./CloseButton";
-import * as Utils from "../lib/utils";
+import CloseButton from "./CloseButton";
 import * as Types from "../types";
 const { React } = common;
 const { FormItem } = components;
 
-export class KeybindRecorderItem extends React.Component<
-  Types.KeybindRecorderItemProps,
-  Types.KeybindRecorderItemState
-> {
-  constructor(props: Types.KeybindRecorderItemProps) {
-    super(props);
-    props.clearable = Utils.hasProps(props, ["clearable"]) ? true : props.clearable;
-    this.state = { value: props.value };
-    this.clear = this.clear.bind(this);
-  }
-
-  clear() {
-    this.setState({ value: [] });
-    this.props.onChange([]);
-  }
-
-  render() {
-    return (
-      <FormItem
-        title={this.props.title}
-        style={{ marginBottom: 20 }}
-        note={this.props.note}
-        notePosition="after"
-        divider>
+export default (props: Types.KeybindRecorderItemProps) => {
+  props.clearable = props.clearable ?? true;
+  const [value, setValue] = React.useState(props.value);
+  const clear = () => {
+    setValue([]);
+    props.onChange([]);
+  };
+  return (
+    <FormItem
+      {...{
+        title: props.title,
+        style: { marginBottom: 20 },
+        note: props.note,
+        notePosition: "after",
+        divider: true,
+      }}>
+      <div
+        {...{
+          style: {
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          },
+        }}>
         <div
           {...{
             style: {
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
+              flexGrow: 1,
             },
           }}>
+          <KeybindRecorder
+            {...{
+              disabled: props.disabled,
+              defaultValue: value,
+              onChange: (value) => {
+                setValue(value);
+                props.onChange(value);
+              },
+            }}
+          />
+        </div>
+        {props.clearable && (
           <div
             {...{
               style: {
-                flexGrow: 1,
+                marginLeft: "5px",
+                color: "var(--interactive-normal)",
+                cursor: "pointer",
               },
             }}>
-            <KeybindRecorder
+            <CloseButton
               {...{
-                disabled: this.props.disabled,
-                defaultValue: this.state.value,
-                onChange: (value: boolean | string | unknown[]) => {
-                  this.setState({ value });
-                  this.props.onChange(value);
-                },
+                onClick: () => clear(),
               }}
             />
           </div>
-          {this.props.clearable && (
-            <div
-              {...{
-                style: {
-                  marginLeft: "5px",
-                  color: "var(--interactive-normal)",
-                  cursor: "pointer",
-                },
-              }}>
-              <CloseButton
-                {...{
-                  onClick: this.clear,
-                }}
-              />
-            </div>
-          )}
-        </div>
-      </FormItem>
-    );
-  }
-}
+        )}
+      </div>
+    </FormItem>
+  );
+};

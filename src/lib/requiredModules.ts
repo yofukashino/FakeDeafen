@@ -65,6 +65,4 @@ export const AccountDetailsClasses = webpack.getByProps(
   "godlike",
   "container",
 ) as unknown as Types.AccountDetailsClasses;
-export const KeybindRecorder = webpack.getModule((m) =>
-  Utils.prototypeChecker(m?.exports, ["handleComboChange", "cleanUp"]),
-) as unknown as Types.ComponentClass;
+export const KeybindRecorder = await Utils.forceLoadAndGetKeybindRecorder();

@@ -5,7 +5,7 @@ import { registerSettings } from "./Components/Settings";
 export const isUpdatingStatus = new Set();
 export const PluginInjector = new Injector();
 export const PluginLogger = Logger.plugin("FakeDeafen");
-export const SettingValues = await settings.init("Tharki.FakeDeafen", defaultSettings);
+export const SettingValues = await settings.init("dev.tharki.FakeDeafen", defaultSettings);
 export const {
   toast: Toasts,
   fluxDispatcher: FluxDispatcher,

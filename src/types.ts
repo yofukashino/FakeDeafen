@@ -208,10 +208,6 @@ export interface ContextMenu {
     options?: { enableSpellCheck?: boolean },
   ) => void;
 }
-export interface KeybindRecorderItemSettingUtil {
-  value: boolean | string | unknown[];
-  onChange: (newValue: boolean | string | unknown[]) => void;
-}
 export interface CloseButtonProps {
   size?: string;
   className?: string;
@@ -222,13 +218,10 @@ export interface KeybindRecorderItemProps {
   note?: string;
   size?: string;
   className?: string;
-  value?: boolean | string | unknown[];
-  onChange?: (value: boolean | string | unknown[]) => void;
+  value?: unknown;
+  onChange?: (value: unknown) => void;
   disabled?: boolean;
   clearable?: boolean;
-}
-export interface KeybindRecorderItemState {
-  value: boolean | string | unknown[];
 }
 export interface StatusPickerClasses {
   description: string;
