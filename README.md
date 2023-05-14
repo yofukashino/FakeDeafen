@@ -1,5 +1,7 @@
 ### FakeDeafen
-
+```diff
+- WARNING: This adds some extra time on discord boot, please use with patience.
+```
 Show that you are deafened to others, while in reality you can still hear them.
 
 It's also possible to fake mute and fake video.
