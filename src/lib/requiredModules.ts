@@ -1,5 +1,4 @@
 import { webpack } from "replugged";
-import * as Utils from "./utils";
 import * as Types from "../types";
 export const WindowInfoStore = webpack.getByProps(
   "isFocused",
@@ -65,4 +64,3 @@ export const AccountDetailsClasses = webpack.getByProps(
   "godlike",
   "container",
 ) as unknown as Types.AccountDetailsClasses;
-export const KeybindRecorder = await Utils.forceLoadAndGetKeybindRecorder();

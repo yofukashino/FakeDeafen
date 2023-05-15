@@ -1,11 +1,14 @@
-import { common, components } from "replugged";
-import { KeybindRecorder } from "../lib/requiredModules";
+import { common, components, webpack } from "replugged";
 import CloseButton from "./CloseButton";
+import * as Utils from "../lib/utils";
 import * as Types from "../types";
 const { React } = common;
 const { FormItem } = components;
 
 export default (props: Types.KeybindRecorderItemProps) => {
+  const KeybindRecorder = webpack.getModule((m) =>
+    Utils.prototypeChecker(m?.exports, ["handleComboChange", "cleanUp"]),
+  ) as unknown as Types.ComponentClass;
   props.clearable = props.clearable ?? true;
   const [value, setValue] = React.useState(props.value);
   const clear = () => {
