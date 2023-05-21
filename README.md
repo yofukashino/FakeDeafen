@@ -4,7 +4,7 @@ Show that you are deafened to others, while in reality you can still hear them.
 
 It's also possible to fake mute and fake video.
 
-Direct Download Link: [dev.tharkiDirect Download Link: [dev.tharki.FakeDeafen.asar](https://github.com/Tharki-God/FakeDeafen/releases/latest/download/dev.tharki.FakeDeafen.asar)
+Direct Download Link: [dev.tharki.FakeDeafen.asar](https://github.com/Tharki-God/FakeDeafen/releases/latest/download/dev.tharki.FakeDeafen.asar)
 
 Install Link:
 
