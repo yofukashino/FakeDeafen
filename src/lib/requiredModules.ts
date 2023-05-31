@@ -57,9 +57,6 @@ export const PanelButton = webpack.getBySource(
   "Masks.PANEL_BUTTON",
 ) as unknown as Types.ComponentClass;
 
-export const { AccountDetails } = webpack.getBySource(
-  "isCopiedStreakGodlike",
-) as unknown as Types.AccountDetails;
 export const AccountDetailsClasses = webpack.getByProps(
   "godlike",
   "container",
