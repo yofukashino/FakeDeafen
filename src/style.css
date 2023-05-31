@@ -1,6 +1,6 @@
-.withTagAsButton-OsgQ9L {
+[class*="withTagAsButton"] {
   min-width: 0;
 }
-.container-YkUktl div:has(button) {
+[class*="container"] div:has(button) {
   margin-left: auto;
 }
