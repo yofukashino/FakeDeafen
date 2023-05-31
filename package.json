@@ -1,6 +1,6 @@
 {
   "name": "fake-deafen",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Fake your audio status, to make it look like you are muted or deafened from other's perspective when you're not.",
   "engines": {
     "node": ">=14.0.0"
