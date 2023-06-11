@@ -1,5 +1,5 @@
 import { common, util } from "replugged";
-import { PluginInjector, SettingValues, CommonConsts, lodash } from "../index";
+import { CommonConsts, PluginInjector, SettingValues, lodash } from "../index";
 import {
   AccountDetailsClasses,
   MediaEngineActions,

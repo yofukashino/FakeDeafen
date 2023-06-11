@@ -8,10 +8,7 @@ import * as Types from "../types";
 
 export const patchStatusPicker = (): void => {
   PluginInjectorUtils.addMenuItem(Types.DefaultTypes.ContextMenuTypes.Account, (_data, menu) => {
-    if (
-      !SettingValues.get("statusPicker", defaultSettings.statusPicker)
-    )
-      return;
+    if (!SettingValues.get("statusPicker", defaultSettings.statusPicker)) return;
     const enabled = SettingValues.get("enabled", defaultSettings.enabled);
     const Icon = Utils.addStyle(Icons.sound("16", "16"), {
       marginLeft: "-2px",
@@ -28,7 +25,7 @@ export const patchStatusPicker = (): void => {
         }}
       />,
     );
-    const { children } = menu as {children: Types.ReactElement[]};
+    const { children } = menu as { children: Types.ReactElement[] };
     const switchAccount = children.find((c) => c?.props?.children?.key === "switch-account");
     if (!children.find((c) => c?.props?.className === "tharki"))
       children.splice(
@@ -78,6 +75,5 @@ export const patchStatusPicker = (): void => {
           }}
         />,
       );
-    return;
-  })
+  });
 };

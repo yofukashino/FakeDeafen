@@ -1,17 +1,19 @@
 import { webpack } from "replugged";
 import * as Types from "../types";
-export const WindowInfoStore = webpack.getByProps(
+export const WindowInfoStore = webpack.getByProps<Types.WindowInfoStore>(
   "isFocused",
   "isElementFullScreen",
   "addChangeListener",
   "removeChangeListener",
-) as Types.WindowInfoStore;
+);
 export const KeybindUtilsModule = webpack.getBySource<Types.GenericModule>("numpad plus");
 export const KeybindUtils = {
   toCombo: webpack.getFunctionBySource(KeybindUtilsModule, "numpad plus"),
-  toEvent:  webpack.getFunctionBySource(KeybindUtilsModule, /(?=.*keyCode)(?=.*BROWSER)/),
+  toEvent: webpack.getFunctionBySource(KeybindUtilsModule, /(?=.*keyCode)(?=.*BROWSER)/),
 } as Types.KeybindUtils;
-export const SoundUtilsModule = webpack.getBySource<Types.GenericModule>(/function.*\.disableSounds.*\.getSoundpack\(\).*play\(\).*return/);
+export const SoundUtilsModule = webpack.getBySource<Types.GenericModule>(
+  /function.*\.disableSounds.*\.getSoundpack\(\).*play\(\).*return/,
+);
 export const SoundUtils = {
   createSound: webpack.getFunctionBySource(SoundUtilsModule, "return new"),
   createSoundpackSound: webpack.getFunctionBySource(SoundUtilsModule, ");return"),
@@ -23,10 +25,8 @@ export const StatusPickerClasses = webpack.getByProps<Types.StatusPickerClasses>
   "statusItem",
 );
 
-
-export const GatewayConnectionStore = webpack.getBySource<Types.GatewayConnectionStore>(
-  "GatewayConnectionStore",
-);
+export const GatewayConnectionStore =
+  webpack.getBySource<Types.GatewayConnectionStore>("GatewayConnectionStore");
 
 export const MediaEngineActions = webpack.getByProps<Types.MediaEngineActions>(
   "toggleSelfMute",
@@ -38,9 +38,7 @@ export const NotificationSettingsStore = webpack.getByProps<Types.NotificationSe
   "isSoundDisabled",
 );
 
-export const PanelButton = webpack.getBySource<Types.ComponentClass>(
-  "Masks.PANEL_BUTTON",
-);
+export const PanelButton = webpack.getBySource<Types.ComponentClass>("Masks.PANEL_BUTTON");
 
 export const AccountDetailsClasses = webpack.getByProps<Types.AccountDetailsClasses>(
   "godlike",
