@@ -1,5 +1,5 @@
 import { common, util } from "replugged";
-import { PluginInjector, SettingValues, isUpdatingStatus, lodash } from "../index";
+import { PluginInjector, SettingValues, CommonConsts, lodash } from "../index";
 import {
   AccountDetailsClasses,
   MediaEngineActions,
@@ -123,7 +123,7 @@ export const sleep = (ms: number): Promise<void> => {
 };
 export const waitForUpdate = new Promise<void>((resolve) => {
   const checkUpdateing = (): void => {
-    if (!isUpdatingStatus?.size) {
+    if (!CommonConsts?.isUpdatingStatus) {
       resolve();
     } else setTimeout(checkUpdateing, 100);
   };
@@ -131,7 +131,7 @@ export const waitForUpdate = new Promise<void>((resolve) => {
 });
 export const updateSoundStatus = async (): Promise<void> => {
   await waitForUpdate;
-  isUpdatingStatus.add(isUpdatingStatus?.size + 1);
+  CommonConsts.isUpdatingStatus = true;
   const { state: NotificationSettingsState } = NotificationSettingsStore.__getLocalVars();
   const toToggle = ["mute", "unmute"].filter(
     (m: string): boolean => !NotificationSettingsStore.isSoundDisabled(m),
@@ -143,7 +143,7 @@ export const updateSoundStatus = async (): Promise<void> => {
   NotificationSettingsState.disabledSounds = NotificationSettingsState.disabledSounds.filter(
     (m: string): boolean => !toToggle.includes(m),
   );
-  isUpdatingStatus.clear();
+  CommonConsts.isUpdatingStatus = false;
 };
 export const toggleSoundStatus = (enabled: boolean): void => {
   if (SettingValues.get("playAudio", defaultSettings.playAudio))

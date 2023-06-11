@@ -25,9 +25,9 @@ export const addPanelButton = (): Types.ReactElement | null => {
     <PanelButton
       {...{
         onContextMenu: (event) =>
-          ContextMenuApi.open(event, ((e: Types.ContextMenuArgs) => (
+          ContextMenuApi.open(event, (e) => (
             <FakeDeafenContextMenu {...Object.assign({}, e, { onClose: ContextMenuApi.close })} />
-          )) as unknown as Types.ContextMenu),
+          )),
         icon: () => (enabled ? Icon : DisabledIcon),
         tooltipText: `${enabled ? "Unfake" : "Fake"} VC Status`,
         onClick: () => {

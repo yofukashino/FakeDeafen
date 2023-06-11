@@ -1,7 +1,7 @@
 import { types as DefaultTypes } from "replugged";
 export { types as DefaultTypes } from "replugged";
-import { ReactElement } from "react";
-export { ReactElement, ComponentClass } from "react";
+export type { ReactElement, ComponentClass } from "react";
+export interface GenericModule extends Record<string, DefaultTypes.AnyFunction> {}
 export interface WindowInfoStore {
   isFocused: () => boolean;
   addChangeListener: (callback: DefaultTypes.AnyFunction) => void;
@@ -132,11 +132,15 @@ export interface NotificationSettingsStore {
   __getLocalVars: () => NotificationVars;
   taskbarFlash: boolean;
 }
-export interface MenuArgs
-  extends Array<{
-    navId: string;
-    children: [ReactElement];
-  }> {}
+export interface KeybindUtils {
+  toCombo: DefaultTypes.AnyFunction;
+  toEvent: DefaultTypes.AnyFunction;
+}
+export interface SoundUtils {
+  createSound: DefaultTypes.AnyFunction;
+  createSoundpackSound: DefaultTypes.AnyFunction;
+  playSound: DefaultTypes.AnyFunction;
+}
 export interface KeybindEvent {
   type: string;
   altKey: boolean;
@@ -181,32 +185,6 @@ export interface GenericModule {
 export interface SwitchItemUtil {
   value: boolean;
   onChange: (newValue: boolean) => void;
-}
-export interface ContextMenuArgs {
-  className: string;
-  config: { context: string };
-  context: string;
-  onHeightUpdate: DefaultTypes.AnyFunction;
-  position: null | number;
-  target: HTMLElement;
-  theme: string;
-}
-export interface ExtendedContextMenuArgs extends ContextMenuArgs {
-  onClose: DefaultTypes.AnyFunction;
-}
-export interface ContextMenu {
-  close: DefaultTypes.AnyFunction;
-  open: (
-    event: React.UIEvent,
-    render?: ContextMenu,
-    options?: { enableSpellCheck?: boolean },
-    renderLazy?: Promise<ContextMenu>,
-  ) => void;
-  openLazy: (
-    event: React.UIEvent,
-    renderLazy?: Promise<ContextMenu>,
-    options?: { enableSpellCheck?: boolean },
-  ) => void;
 }
 export interface CloseButtonProps {
   size?: string;

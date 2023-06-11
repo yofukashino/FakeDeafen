@@ -1,6 +1,5 @@
-import { webpack } from "replugged";
-import { ContextMenu, ContextMenuApi, PluginInjector, SettingValues } from "../index";
-import { Menu, StatusPickerClasses } from "../lib/requiredModules";
+import { ContextMenu, ContextMenuApi, PluginInjectorUtils, SettingValues } from "../index";
+import { StatusPickerClasses } from "../lib/requiredModules";
 import { FakeDeafenContextMenu } from "../Components/ContextMenu";
 import { defaultSettings } from "../lib/consts";
 import * as Icons from "../Components/Icons";
@@ -8,13 +7,11 @@ import * as Utils from "../lib/utils";
 import * as Types from "../types";
 
 export const patchStatusPicker = (): void => {
-  const patchFunctionKey = webpack.getFunctionKeyBySource(Menu, ".navId") as string;
-  PluginInjector.before(Menu, patchFunctionKey, (args: Types.MenuArgs): Types.MenuArgs => {
+  PluginInjectorUtils.addMenuItem(Types.DefaultTypes.ContextMenuTypes.Account, (_data, menu) => {
     if (
-      !SettingValues.get("statusPicker", defaultSettings.statusPicker) ||
-      args[0].navId !== "account"
+      !SettingValues.get("statusPicker", defaultSettings.statusPicker)
     )
-      return args;
+      return;
     const enabled = SettingValues.get("enabled", defaultSettings.enabled);
     const Icon = Utils.addStyle(Icons.sound("16", "16"), {
       marginLeft: "-2px",
@@ -31,7 +28,7 @@ export const patchStatusPicker = (): void => {
         }}
       />,
     );
-    const [{ children }] = args;
+    const { children } = menu as {children: Types.ReactElement[]};
     const switchAccount = children.find((c) => c?.props?.children?.key === "switch-account");
     if (!children.find((c) => c?.props?.className === "tharki"))
       children.splice(
@@ -59,11 +56,11 @@ export const patchStatusPicker = (): void => {
               <div
                 {...{
                   onContextMenu: (event) =>
-                    ContextMenuApi.open(event, ((e: Types.ContextMenuArgs) => (
+                    ContextMenuApi.open(event, (e) => (
                       <FakeDeafenContextMenu
                         {...Object.assign({}, e, { onClose: ContextMenuApi.close })}
                       />
-                    )) as unknown as Types.ContextMenu),
+                    )),
                   className: StatusPickerClasses.statusItem,
                   "aria-label": `${enabled ? "Unfake" : "Fake"} VC Status`,
                 }}>
@@ -81,6 +78,6 @@ export const patchStatusPicker = (): void => {
           }}
         />,
       );
-    return args;
-  });
+    return;
+  })
 };

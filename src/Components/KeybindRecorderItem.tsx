@@ -6,9 +6,9 @@ const { React } = common;
 const { FormItem } = components;
 
 export default (props: Types.KeybindRecorderItemProps) => {
-  const KeybindRecorder = webpack.getModule((m) =>
+  const KeybindRecorder = webpack.getModule<Types.ComponentClass>((m) =>
     Utils.prototypeChecker(m?.exports, ["handleComboChange", "cleanUp"]),
-  ) as unknown as Types.ComponentClass;
+  );
   props.clearable = props.clearable ?? true;
   const [value, setValue] = React.useState(props.value);
   const clear = () => {

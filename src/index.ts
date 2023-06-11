@@ -2,8 +2,11 @@ import { Injector, Logger, common, components, settings } from "replugged";
 import { defaultSettings } from "./lib/consts";
 import "./style.css";
 import { registerSettings } from "./Components/Settings";
-export const isUpdatingStatus = new Set();
+export const CommonConsts = {
+  isUpdatingStatus: false
+};
 export const PluginInjector = new Injector();
+export const { utils: PluginInjectorUtils }= PluginInjector;
 export const PluginLogger = Logger.plugin("FakeDeafen");
 export const SettingValues = await settings.init("dev.tharki.FakeDeafen", defaultSettings);
 export const {

@@ -2,12 +2,11 @@ import { components } from "replugged";
 import { SettingValues } from "../index";
 import { defaultSettings } from "../lib/consts";
 import * as Utils from "../lib/utils";
-import * as Types from "../types";
 const {
   ContextMenu: { MenuCheckboxItem, ContextMenu, MenuSeparator, MenuItem },
 } = components;
 
-export const FakeDeafenContextMenu = (props: Types.ExtendedContextMenuArgs) => {
+export const FakeDeafenContextMenu = (props) => {
   const { value: muteValue, onChange: muteOnChange } = Utils.useSetting(
     SettingValues,
     "soundStatus.mute",
@@ -36,7 +35,7 @@ export const FakeDeafenContextMenu = (props: Types.ExtendedContextMenuArgs) => {
         {...{
           id: "mute",
           label: "Mute",
-          checked: muteValue,
+          checked: muteValue as boolean,
           action: () => muteOnChange(!muteValue as unknown as string),
         }}
       />
@@ -44,7 +43,7 @@ export const FakeDeafenContextMenu = (props: Types.ExtendedContextMenuArgs) => {
         {...{
           id: "deafen",
           label: "Deafen",
-          checked: deafValue,
+          checked: deafValue as boolean,
           action: () => deafOnChange(!deafValue as unknown as string),
         }}
       />
@@ -52,7 +51,7 @@ export const FakeDeafenContextMenu = (props: Types.ExtendedContextMenuArgs) => {
         {...{
           id: "video",
           label: "Video",
-          checked: videoValue,
+          checked: videoValue as boolean,
           action: () => videoOnChange(!videoValue as unknown as string),
         }}
       />
