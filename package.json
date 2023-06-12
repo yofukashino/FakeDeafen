@@ -1,6 +1,6 @@
 {
   "name": "fake-deafen",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Fake your audio status, to make it look like you are muted or deafened from other's perspective when you're not.",
   "engines": {
     "node": ">=14.0.0"
@@ -30,7 +30,7 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-react": "^7.32.2",
     "prettier": "^2.8.8",
-    "replugged": "^4.4.1",
+    "replugged": "^4.4.2",
     "typescript": "^4.9.5"
   }
 }
