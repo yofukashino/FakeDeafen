@@ -1,9 +1,9 @@
 import { PluginInjector, SettingValues } from "../index";
 import { GatewayConnectionStore } from "../lib/requiredModules";
 import { defaultSettings } from "../lib/consts";
-import * as Types from "../types";
+import Types from "../types";
 
-export const patchGatewayConnectionStore = (): void => {
+export default (): void => {
   PluginInjector.before(
     GatewayConnectionStore.getSocket(),
     "voiceStateUpdate",

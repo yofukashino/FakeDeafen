@@ -1,16 +1,17 @@
 import { ContextMenuApi, SettingValues } from "../index";
 import { PanelButton } from "../lib/requiredModules";
 import { defaultSettings } from "../lib/consts";
-import { FakeDeafenContextMenu } from "../Components/ContextMenu";
-import * as Icons from "../Components/Icons";
-import * as Utils from "../lib/utils";
-import * as Types from "../types";
-export const addPanelButton = (): Types.ReactElement | null => {
+import FakeDeafenContextMenu from "./ContextMenu";
+import Icons from "../Components/Icons";
+import Utils from "../lib/utils";
+export const _addPanelButton = (): React.ReactElement | null => {
   if (!SettingValues.get("userPanel", defaultSettings.userPanel)) return null;
   const enabled = SettingValues.get("enabled", defaultSettings.enabled);
   const Icon = Icons.sound("20", "20");
-  const DisabledIcon = Utils.addChilds(
-    Icon,
+  const DisabledIcon = Icons.sound(
+    "20",
+    "20",
+    {},
     <polygon
       {...{
         style: {
@@ -28,7 +29,7 @@ export const addPanelButton = (): Types.ReactElement | null => {
           ContextMenuApi.open(event, (e) => (
             <FakeDeafenContextMenu {...Object.assign({}, e, { onClose: ContextMenuApi.close })} />
           )),
-        icon: () => (enabled ? Icon : DisabledIcon),
+        icon: () => (enabled ? DisabledIcon : Icon),
         tooltipText: `${enabled ? "Unfake" : "Fake"} VC Status`,
         onClick: () => {
           Utils.toggleSoundStatus(enabled);

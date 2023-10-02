@@ -1,20 +1,24 @@
 import { ContextMenu, ContextMenuApi, PluginInjectorUtils, SettingValues } from "../index";
 import { StatusPickerClasses } from "../lib/requiredModules";
-import { FakeDeafenContextMenu } from "../Components/ContextMenu";
+import FakeDeafenContextMenu from "../Components/ContextMenu";
 import { defaultSettings } from "../lib/consts";
-import * as Icons from "../Components/Icons";
-import * as Utils from "../lib/utils";
-import * as Types from "../types";
+import Icons from "../Components/Icons";
+import Utils from "../lib/utils";
+import Types from "../types";
 
-export const patchStatusPicker = (): void => {
+export default (): void => {
   PluginInjectorUtils.addMenuItem(Types.DefaultTypes.ContextMenuTypes.Account, (_data, menu) => {
     if (!SettingValues.get("statusPicker", defaultSettings.statusPicker)) return;
     const enabled = SettingValues.get("enabled", defaultSettings.enabled);
-    const Icon = Utils.addStyle(Icons.sound("16", "16"), {
+    const Icon = Icons.sound("16", "16", {
       marginLeft: "-2px",
     });
-    const DisabledIcon = Utils.addChilds(
-      Icon,
+    const DisabledIcon = Icons.sound(
+      "16",
+      "16",
+      {
+        marginLeft: "-2px",
+      },
       <polygon
         {...{
           style: {
@@ -25,7 +29,7 @@ export const patchStatusPicker = (): void => {
         }}
       />,
     );
-    const { children } = menu as { children: Types.ReactElement[] };
+    const { children } = menu as { children: React.ReactElement[] };
     const switchAccount = children.find((c) => c?.props?.children?.key === "switch-account");
     if (!children.find((c) => c?.props?.className === "tharki"))
       children.splice(

@@ -2,9 +2,9 @@ import { components, util } from "replugged";
 import { PluginLogger, SettingValues } from "../index";
 import { defaultSettings } from "../lib/consts";
 const { SwitchItem, Category } = components;
-import KeybindRecorderItem from "./KeybindRecorderItem";
-import * as Utils from "../lib/utils";
-import * as Types from "../types";
+import KeybindItem from "./KeybindItem";
+import Utils from "../lib/utils";
+import Types from "../types";
 export const registerSettings = (): void => {
   for (const key in defaultSettings) {
     if (SettingValues.has(key as keyof Types.Settings)) return;
@@ -12,7 +12,7 @@ export const registerSettings = (): void => {
     SettingValues.set(key as keyof Types.Settings, defaultSettings[key]);
   }
 };
-export const Settings = (): Types.ReactElement => {
+export const Settings = (): React.ReactElement => {
   return (
     <div>
       <Category
@@ -24,33 +24,33 @@ export const Settings = (): Types.ReactElement => {
         <SwitchItem
           {...{
             note: "Whether you want to fake mute or not.",
-            ...(Utils.useSetting(
+            ...Utils.useSetting(
               SettingValues,
               "soundStatus.mute",
               defaultSettings.soundStatus.mute,
-            ) as unknown as Types.SwitchItemUtil),
+            ),
           }}>
           Mute
         </SwitchItem>
         <SwitchItem
           {...{
             note: "Whether you want to fake deafen or not.",
-            ...(Utils.useSetting(
+            ...Utils.useSetting(
               SettingValues,
               "soundStatus.deaf",
               defaultSettings.soundStatus.deaf,
-            ) as unknown as Types.SwitchItemUtil),
+            ),
           }}>
           Deafen
         </SwitchItem>
         <SwitchItem
           {...{
             note: "Whether you want to fake video or not.",
-            ...(Utils.useSetting(
+            ...Utils.useSetting(
               SettingValues,
               "soundStatus.video",
               defaultSettings.soundStatus.video,
-            ) as unknown as Types.SwitchItemUtil),
+            ),
           }}>
           Video
         </SwitchItem>
@@ -61,7 +61,7 @@ export const Settings = (): Types.ReactElement => {
           note: "Ways to toggle game activity status on current user.",
           open: false,
         }}>
-        <KeybindRecorderItem
+        <KeybindItem
           {...{
             title: "Toggle by keybind:",
             note: "Keybind to toggle showing game activity.",

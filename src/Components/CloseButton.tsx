@@ -1,6 +1,6 @@
-import * as Types from "../types";
+import Types from "../types";
 
-export default (props: Types.CloseButtonProps): Types.ReactElement => {
+export default (props: Types.CloseButtonProps): React.ReactElement => {
   props.size = props.size || "16px";
   return (
     <svg

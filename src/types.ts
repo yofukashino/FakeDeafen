@@ -1,12 +1,128 @@
 import { types as DefaultTypes } from "replugged";
+import type { Store } from "replugged/dist/renderer/modules/common/flux";
 export { types as DefaultTypes } from "replugged";
-export type { ReactElement, ComponentClass } from "react";
 export interface GenericModule extends Record<string, DefaultTypes.AnyFunction> {}
 export interface WindowInfoStore {
   isFocused: () => boolean;
   addChangeListener: (callback: DefaultTypes.AnyFunction) => void;
   removeChangeListener: (callback: DefaultTypes.AnyFunction) => void;
   isElementFullScreen: () => boolean;
+}
+export interface ElectronModule {
+  architecture: string;
+  asyncify: DefaultTypes.AnyFunction;
+  beforeUnload: DefaultTypes.AnyFunction;
+  blockDisplaySleep: DefaultTypes.AnyFunction;
+  blur: DefaultTypes.AnyFunction;
+  bounceDock: DefaultTypes.AnyFunction;
+  buildNumber: DefaultTypes.AnyFunction;
+  canBootstrapNewUpdater: DefaultTypes.AnyFunction;
+  canCopyImage: DefaultTypes.AnyFunction;
+  cleanupDisplaySleep: DefaultTypes.AnyFunction;
+  clearCandidateGamesCallback: DefaultTypes.AnyFunction;
+  close: DefaultTypes.AnyFunction;
+  copy: DefaultTypes.AnyFunction;
+  copyImage: DefaultTypes.AnyFunction;
+  crash: DefaultTypes.AnyFunction;
+  cut: DefaultTypes.AnyFunction;
+  detectPid: DefaultTypes.AnyFunction;
+  ensureModule: DefaultTypes.AnyFunction;
+  flashFrame: DefaultTypes.AnyFunction;
+  flushCookies: DefaultTypes.AnyFunction;
+  flushDNSCache: DefaultTypes.AnyFunction;
+  flushStorageData: DefaultTypes.AnyFunction;
+  focus: DefaultTypes.AnyFunction;
+  fullscreen: DefaultTypes.AnyFunction;
+  generateSessionFromPid: DefaultTypes.AnyFunction;
+  getAudioPid: DefaultTypes.AnyFunction;
+  getCloudSync: DefaultTypes.AnyFunction;
+  getCrashReporterMetadata: DefaultTypes.AnyFunction;
+  getDesktopSourceFromPid: DefaultTypes.AnyFunction;
+  getDiscordMemoryUsage: DefaultTypes.AnyFunction;
+  getDiscordUtils: () => {
+    beforeUnload: DefaultTypes.AnyFunction;
+    clearCandidateGamesCallback: DefaultTypes.AnyFunction;
+    crash: DefaultTypes.AnyFunction;
+    gameDisplayModeIsSupported: DefaultTypes.AnyFunction;
+    gameDisplayModeUpdate: DefaultTypes.AnyFunction;
+    generateSessionFromPid: DefaultTypes.AnyFunction;
+    getAudioPid: DefaultTypes.AnyFunction;
+    getDiscordMemoryUsage: DefaultTypes.AnyFunction;
+    getGPUDriverVersions: DefaultTypes.AnyFunction;
+    getPidFromWindowHandle: DefaultTypes.AnyFunction;
+    getWindowFullscreenTypeByPid: DefaultTypes.AnyFunction;
+    getWindowHandleFromPid: DefaultTypes.AnyFunction;
+    initializeExitHook: DefaultTypes.AnyFunction;
+    inputCaptureRegisterElement: DefaultTypes.AnyFunction;
+    inputEventRegister: DefaultTypes.AnyFunction;
+    inputEventUnregister: DefaultTypes.AnyFunction;
+    inputGetRegisteredEvents: DefaultTypes.AnyFunction;
+    inputSetFocused: DefaultTypes.AnyFunction;
+    isSystemDarkMode: DefaultTypes.AnyFunction;
+    nativePermissionOpenSettings: DefaultTypes.AnyFunction;
+    nativePermssionHasAuthorization: DefaultTypes.AnyFunction;
+    nativePermssionRequestAuthorization: DefaultTypes.AnyFunction;
+    notifyGameLaunched: DefaultTypes.AnyFunction;
+    setCandidateGamesCallback: DefaultTypes.AnyFunction;
+    setForegroundProcess: DefaultTypes.AnyFunction;
+    setGameCandidateOverrides: DefaultTypes.AnyFunction;
+    setObservedGamesCallback: DefaultTypes.AnyFunction;
+    setProcessPriority: DefaultTypes.AnyFunction;
+    shouldDisplayNotifications: DefaultTypes.AnyFunction;
+    submitLiveCrashReport: DefaultTypes.AnyFunction;
+    _generateLiveMinidump: DefaultTypes.AnyFunction;
+  };
+  getDispatch: DefaultTypes.AnyFunction;
+  getEnableHardwareAcceleration: DefaultTypes.AnyFunction;
+  getGPUDriverVersions: DefaultTypes.AnyFunction;
+  getGameUtils: DefaultTypes.AnyFunction;
+  getIdleMilliseconds: DefaultTypes.AnyFunction;
+  getPidFromDesktopSource: DefaultTypes.AnyFunction;
+  getSetting: DefaultTypes.AnyFunction;
+  getVoiceEngine: DefaultTypes.AnyFunction;
+  inputEventRegister: DefaultTypes.AnyFunction;
+  inputEventUnregister: DefaultTypes.AnyFunction;
+  invoke: DefaultTypes.AnyFunction;
+  isAlwaysOnTop: DefaultTypes.AnyFunction;
+  isSystemDarkMode: DefaultTypes.AnyFunction;
+  makeChunkedRequest: DefaultTypes.AnyFunction;
+  maximize: DefaultTypes.AnyFunction;
+  minimize: DefaultTypes.AnyFunction;
+  moduleVersions: DefaultTypes.AnyFunction;
+  on: DefaultTypes.AnyFunction;
+  paste: DefaultTypes.AnyFunction;
+  purgeMemory: DefaultTypes.AnyFunction;
+  readClipboard: DefaultTypes.AnyFunction;
+  relaunch: DefaultTypes.AnyFunction;
+  releaseChannel: DefaultTypes.AnyFunction;
+  requireModule: DefaultTypes.AnyFunction;
+  restore: DefaultTypes.AnyFunction;
+  saveFile: DefaultTypes.AnyFunction;
+  saveImage: DefaultTypes.AnyFunction;
+  send: DefaultTypes.AnyFunction;
+  setAlwaysOnTop: DefaultTypes.AnyFunction;
+  setApplicationBackgroundColor: DefaultTypes.AnyFunction;
+  setBackgroundThrottling: DefaultTypes.AnyFunction;
+  setBadge: DefaultTypes.AnyFunction;
+  setCandidateGamesCallback: DefaultTypes.AnyFunction;
+  setCrashInformation: DefaultTypes.AnyFunction;
+  setEnableHardwareAcceleration: DefaultTypes.AnyFunction;
+  setFocused: DefaultTypes.AnyFunction;
+  setForegroundProcess: DefaultTypes.AnyFunction;
+  setGameCandidateOverrides: DefaultTypes.AnyFunction;
+  setObservedGamesCallback: DefaultTypes.AnyFunction;
+  setOnInputEventCallback: DefaultTypes.AnyFunction;
+  setSystemTrayApplications: DefaultTypes.AnyFunction;
+  setSystemTrayIcon: DefaultTypes.AnyFunction;
+  setThumbarButtons: DefaultTypes.AnyFunction;
+  setZoomFactor: DefaultTypes.AnyFunction;
+  shouldDisplayNotifications: DefaultTypes.AnyFunction;
+  showOpenDialog: DefaultTypes.AnyFunction;
+  submitLiveCrashReport: DefaultTypes.AnyFunction;
+  supportsFeature: DefaultTypes.AnyFunction;
+  unblockDisplaySleep: DefaultTypes.AnyFunction;
+  undetectPid: DefaultTypes.AnyFunction;
+  updateCrashReporter: DefaultTypes.AnyFunction;
 }
 export interface Socket {
   analytics: object;
@@ -45,7 +161,7 @@ export interface Socket {
   _eventsCount: number;
   _maxListeners: undefined | number;
 }
-export interface GatewayConnectionStore {
+export interface GatewayConnectionStore extends Store {
   getSocket: () => Socket;
   initialize: DefaultTypes.AnyFunction;
   isConnected: DefaultTypes.AnyFunction;
@@ -99,27 +215,7 @@ export interface MediaEngineActions {
   toggleSelfDeaf: DefaultTypes.AnyFunction;
   toggleSelfMute: DefaultTypes.AnyFunction;
 }
-export interface NotificationVars {
-  initialState: {
-    desktopType: string;
-    disableAllSounds: boolean;
-    disableUnreadBadge: boolean;
-    disabledSounds: string[];
-    notifyMessagesInSelectedChannel: boolean;
-    taskbarFlash: boolean;
-    ttsType: string;
-  };
-  state: {
-    desktopType: string;
-    disableAllSounds: boolean;
-    disableUnreadBadge: boolean;
-    disabledSounds: string[];
-    notifyMessagesInSelectedChannel: boolean;
-    taskbarFlash: boolean;
-    ttsType: string;
-  };
-}
-export interface NotificationSettingsStore {
+export interface NotificationSettingsStore extends Store {
   getDesktopType: DefaultTypes.AnyFunction;
   getDisableAllSounds: DefaultTypes.AnyFunction;
   getDisableUnreadBadge: DefaultTypes.AnyFunction;
@@ -129,7 +225,6 @@ export interface NotificationSettingsStore {
   getUserAgnosticState: DefaultTypes.AnyFunction;
   initialize: DefaultTypes.AnyFunction;
   isSoundDisabled: (sound: string) => boolean;
-  __getLocalVars: () => NotificationVars;
   taskbarFlash: boolean;
 }
 export interface KeybindUtils {
@@ -141,18 +236,6 @@ export interface SoundUtils {
   createSoundpackSound: DefaultTypes.AnyFunction;
   playSound: DefaultTypes.AnyFunction;
 }
-export interface KeybindEvent {
-  type: string;
-  altKey: boolean;
-  ctrlKey: boolean;
-  keyCode: number;
-  metaKey: boolean;
-  shiftKey: boolean;
-}
-export interface CurrentlyPressed {
-  [key: number]: KeybindEvent;
-}
-export interface KeybindEvents extends Array<KeybindEvent> {}
 
 export interface AccountDetailsClasses {
   accountProfilePopoutWrapper: string;
@@ -179,24 +262,25 @@ export interface AccountDetailsClasses {
 export interface AccountDetails {
   AccountDetails: DefaultTypes.AnyFunction;
 }
-export interface GenericModule {
-  [key: string]: DefaultTypes.AnyFunction;
-}
-export interface SwitchItemUtil {
-  value: boolean;
-  onChange: (newValue: boolean) => void;
-}
 export interface CloseButtonProps {
   size?: string;
   className?: string;
   onClick?: () => void;
+}
+export interface KeybindEvent {
+  type: string;
+  altKey: boolean;
+  ctrlKey: boolean;
+  keyCode: number;
+  metaKey: boolean;
+  shiftKey: boolean;
 }
 export interface KeybindRecorderItemProps {
   title?: string;
   note?: string;
   size?: string;
   className?: string;
-  value?: unknown;
+  value?: number[][];
   onChange?: (value: unknown) => void;
   disabled?: boolean;
   clearable?: boolean;
@@ -215,6 +299,37 @@ export interface StatusPickerClasses {
   statusPickerModalMenu: string;
 }
 
+export type Jsonifiable =
+  | null
+  | undefined
+  | boolean
+  | number
+  | string
+  | Jsonifiable[]
+  | { [key: string]: Jsonifiable };
+export type ValType<T> =
+  | T
+  | React.ChangeEvent<HTMLInputElement>
+  | (Record<string, unknown> & { value?: T; checked?: T });
+
+export type NestedType<T, P> = P extends `${infer Left}.${infer Right}`
+  ? Left extends keyof T
+    ? NestedType<T[Left], Right>
+    : Left extends `${infer FieldKey}[${infer IndexKey}]`
+    ? FieldKey extends keyof T
+      ? NestedType<Exclude<T[FieldKey], undefined> extends infer U ? U : never, IndexKey>
+      : undefined
+    : undefined
+  : P extends keyof T
+  ? T[P]
+  : P extends `${infer FieldKey}[${infer _IndexKey}]`
+  ? FieldKey extends keyof T
+    ? Exclude<T[FieldKey], undefined> extends infer U
+      ? U
+      : never
+    : undefined
+  : undefined;
+
 export interface Settings {
   enabled: boolean;
   soundStatus: {
@@ -226,5 +341,15 @@ export interface Settings {
   userPanel: boolean;
   playAudio: boolean;
   showToast: boolean;
-  keybind: unknown[];
+  keybind: Array<{
+    altKey: boolean;
+    code: string;
+    ctrlKey: boolean;
+    key: string;
+    keyCode: number;
+    metaKey: boolean;
+    shiftKey: boolean;
+  }>;
 }
+
+export * as default from "./types";

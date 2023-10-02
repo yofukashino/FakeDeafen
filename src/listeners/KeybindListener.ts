@@ -1,12 +1,13 @@
-import { CurrentlyPressed, SettingValues, Toasts } from "../index";
+import { CommonConsts, SettingValues, Toasts } from "../index";
 import { defaultSettings } from "../lib/consts";
 import { KeybindUtils } from "../lib/requiredModules";
-import * as Utils from "../lib/utils";
-import * as Types from "../types";
+import Utils from "../lib/utils";
+import Types from "../types";
+
 export const keybindListener = (e: Types.KeybindEvent): void => {
   const keybindEvents = KeybindUtils.toEvent(
     SettingValues.get("keybind", defaultSettings.keybind),
-  ) as Types.KeybindEvents;
+  ) as Types.KeybindEvent[];
   if (
     e.type === "keyup" &&
     keybindEvents.length &&
@@ -14,7 +15,7 @@ export const keybindListener = (e: Types.KeybindEvent): void => {
       (ev) =>
         Object.keys(ev)
           .filter((k) => k !== "keyCode")
-          .every((k) => ev[k] === e[k]) && CurrentlyPressed.get(ev.keyCode),
+          .every((k) => ev[k] === e[k]) && CommonConsts.CurrentlyPressed.get(ev.keyCode),
     )
   ) {
     const enabled = SettingValues.get("enabled", defaultSettings.enabled);
@@ -22,5 +23,5 @@ export const keybindListener = (e: Types.KeybindEvent): void => {
       Toasts.toast(`${enabled ? "Unfaked" : "Faked"} VC Status`, Toasts.Kind.SUCCESS);
     Utils.toggleSoundStatus(enabled);
   }
-  CurrentlyPressed.set(e.keyCode, e.type === "keydown");
+  CommonConsts.CurrentlyPressed.set(e.keyCode, e.type === "keydown");
 };

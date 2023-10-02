@@ -10,7 +10,7 @@ export const defaultSettings = {
   userPanel: true,
   playAudio: true,
   showToast: true,
-  keybind: KeybindUtils.toCombo("ctrl+d"),
+  keybind: KeybindUtils.toCombo("ctrl+d") as number[][],
 };
 export const Sounds = {
   Enable: "ptt_start",

@@ -1,12 +1,12 @@
 import { components } from "replugged";
 import { SettingValues } from "../index";
 import { defaultSettings } from "../lib/consts";
-import * as Utils from "../lib/utils";
+import Utils from "../lib/utils";
 const {
   ContextMenu: { MenuCheckboxItem, ContextMenu, MenuSeparator, MenuItem },
 } = components;
 
-export const FakeDeafenContextMenu = (props) => {
+export default (props) => {
   const { value: muteValue, onChange: muteOnChange } = Utils.useSetting(
     SettingValues,
     "soundStatus.mute",
@@ -36,7 +36,7 @@ export const FakeDeafenContextMenu = (props) => {
           id: "mute",
           label: "Mute",
           checked: muteValue as boolean,
-          action: () => muteOnChange(!muteValue as unknown as string),
+          action: () => muteOnChange(!muteValue),
         }}
       />
       <MenuCheckboxItem
@@ -44,7 +44,7 @@ export const FakeDeafenContextMenu = (props) => {
           id: "deafen",
           label: "Deafen",
           checked: deafValue as boolean,
-          action: () => deafOnChange(!deafValue as unknown as string),
+          action: () => deafOnChange(!deafValue),
         }}
       />
       <MenuCheckboxItem
@@ -52,7 +52,7 @@ export const FakeDeafenContextMenu = (props) => {
           id: "video",
           label: "Video",
           checked: videoValue as boolean,
-          action: () => videoOnChange(!videoValue as unknown as string),
+          action: () => videoOnChange(!videoValue),
         }}
       />
     </ContextMenu>

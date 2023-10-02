@@ -4,6 +4,9 @@ import "./style.css";
 import { registerSettings } from "./Components/Settings";
 export const CommonConsts = {
   isUpdatingStatus: false,
+  resolveUpdate: () => void 0,
+  updatePromise: new Promise<void>((res) => res()),
+  CurrentlyPressed: new Map(),
 };
 export const PluginInjector = new Injector();
 export const { utils: PluginInjectorUtils } = PluginInjector;
@@ -16,7 +19,6 @@ export const {
   lodash,
 } = common;
 export const { ContextMenu } = components;
-export const CurrentlyPressed = new Map();
 
 import { applyInjections } from "./patches/index";
 import { addListeners, removeListeners } from "./listeners/index";
@@ -32,6 +34,6 @@ export const stop = (): void => {
   removeListeners();
 };
 
-export { addPanelButton } from "./patches/AccountDetails";
+export { _addPanelButton } from "./Components/AccountDetailsButton";
 
 export { Settings } from "./Components/Settings.jsx";

@@ -1,29 +1,17 @@
-import { common, util } from "replugged";
+import { common, settings, util } from "replugged";
 import { CommonConsts, PluginInjector, SettingValues, lodash } from "../index";
-import {
-  AccountDetailsClasses,
-  MediaEngineActions,
-  NotificationSettingsStore,
-  SoundUtils,
-} from "./requiredModules";
+import { AccountDetailsClasses, MediaEngineActions, SoundUtils } from "./requiredModules";
 import { Sounds, defaultSettings } from "./consts";
-import * as Types from "../types";
+import Types from "../types";
 const { React } = common;
-
-export const filterOutObjectKey = (object: object, keys: string[]): object =>
-  Object.keys(object)
-    .filter((key) => !keys.includes(key))
-    .reduce((obj, key) => {
-      obj[key] = object[key];
-      return obj;
-    }, {});
 
 export const findInTree = (
   tree: object,
-  searchFilter: Types.DefaultTypes.AnyFunction,
-  searchOptions: { ignore?: string[]; walkable?: null | string[] },
+  searchFilter: Types.DefaultTypes.AnyFunction | string,
+  searchOptions?: { ignore?: string[]; walkable?: null | string[]; maxRecrusions?: number },
 ): unknown => {
-  const { walkable = null, ignore = [] } = searchOptions;
+  const { walkable = null, ignore = [], maxRecrusions = Infinity } = searchOptions ?? {};
+  if (maxRecrusions == 0) return;
   if (typeof searchFilter === "string") {
     if (Object.hasOwnProperty.call(tree, searchFilter)) return tree[searchFilter];
   } else if (searchFilter(tree)) {
@@ -34,14 +22,22 @@ export const findInTree = (
   let tempReturn: unknown;
   if (Array.isArray(tree)) {
     for (const value of tree) {
-      tempReturn = findInTree(value, searchFilter, { walkable, ignore });
+      tempReturn = findInTree(value, searchFilter, {
+        walkable,
+        ignore,
+        maxRecrusions: maxRecrusions - 1,
+      });
       if (typeof tempReturn !== "undefined") return tempReturn;
     }
   } else {
     const toWalk = walkable == null ? Object.keys(tree) : walkable;
     for (const key of toWalk) {
       if (!Object.hasOwnProperty.call(tree, key) || ignore.includes(key)) continue;
-      tempReturn = findInTree(tree[key], searchFilter, { walkable, ignore });
+      tempReturn = findInTree(tree[key], searchFilter, {
+        walkable,
+        ignore,
+        maxRecrusions: maxRecrusions - 1,
+      });
       if (typeof tempReturn !== "undefined") return tempReturn;
     }
   }
@@ -49,147 +45,95 @@ export const findInTree = (
 };
 
 export const findInReactTree = (
-  tree: Types.ReactElement,
-  searchFilter: Types.DefaultTypes.AnyFunction,
-): unknown | Types.ReactElement => {
-  return findInTree(tree, searchFilter, { walkable: ["props", "children", "child", "sibling"] });
-};
-
-export const isObject = (testMaterial: unknown): boolean =>
-  typeof testMaterial === "object" && !Array.isArray(testMaterial) && testMaterial != null;
-
-export const hasProps = (mod: object, props: string[] | unknown[]): boolean =>
-  isObject(mod) && props.every((prop: string | unknown) => Object.hasOwnProperty.call(mod, prop));
-
-export const stringify = (component: Types.ReactElement): string =>
-  JSON.stringify(component, (_, symbol) =>
-    typeof symbol === "symbol" ? `$$Symbol:${Symbol.keyFor(symbol)}` : symbol,
-  );
-
-export const prase = (component: string): Types.ReactElement =>
-  JSON.parse(component, (_, symbol) => {
-    const matches = symbol?.match?.(/^\$\$Symbol:(.*)$/);
-    return matches ? Symbol.for(matches[1]) : symbol;
+  tree: React.ReactElement,
+  searchFilter: Types.DefaultTypes.AnyFunction | string,
+  searchOptions?: { maxRecrusions?: number },
+): unknown | React.ReactElement => {
+  const { maxRecrusions = Infinity } = searchOptions ?? {};
+  return findInTree(tree, searchFilter, {
+    walkable: ["props", "children", "child", "sibling"],
+    maxRecrusions,
   });
-export const deepCloneReactComponent = (component: Types.ReactElement): Types.ReactElement =>
-  prase(stringify(component));
-
-export const addStyle = (
-  component: Types.ReactElement,
-  style: object,
-): Types.ReactElement | undefined => {
-  if (!component || !style) return;
-  component = React.cloneElement(component);
-  component.props.style = component.props.style ? { ...component.props.style, ...style } : style;
-  return component;
 };
 
-export const addChilds = (
-  component: Types.ReactElement,
-  childrens: Types.ReactElement[] | Types.ReactElement,
-): Types.ReactElement | undefined => {
-  if (!component || !childrens) return;
-  component = React.cloneElement(component);
-  if (!Array.isArray(component.props.children))
-    component.props.children = [component.props.children];
-  else
-    component.props.children = component.props.children.map(
-      (m: Types.ReactElement): Types.ReactElement => React.cloneElement(m),
-    );
-  if (Array.isArray(childrens)) component.props.children.push(...childrens);
-  else component.props.children.push(childrens);
-  return component;
-};
-
-export const prototypeChecker = (
-  ModuleExports: Types.DefaultTypes.ModuleExports,
-  Protos: string[],
-): boolean =>
-  isObject(ModuleExports) &&
-  Protos.every((p) =>
-    Object.values(ModuleExports).some((m) => (m as { prototype: () => void })?.prototype?.[p]),
-  );
-export const forceUpdate = (element: HTMLElement): void => {
+export const forceRerenderElement = async (selector: string): Promise<void> => {
+  const element = await util.waitFor(selector);
   if (!element) return;
-  const toForceUpdate = util.getOwnerInstance(element);
-  const forceRerender = PluginInjector.instead(toForceUpdate, "render", () => {
-    forceRerender();
+  const ownerInstance = util.getOwnerInstance(element);
+  const unpatchRender = PluginInjector.instead(ownerInstance, "render", () => {
+    unpatchRender();
     return null;
   });
-  toForceUpdate.forceUpdate(() => toForceUpdate.forceUpdate(() => {}));
+  ownerInstance.forceUpdate(() => ownerInstance.forceUpdate(() => {}));
 };
-export const sleep = (ms: number): Promise<void> => {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-};
-export const waitForUpdate = new Promise<void>((resolve) => {
-  const checkUpdateing = (): void => {
-    if (!CommonConsts?.isUpdatingStatus) {
-      resolve();
-    } else setTimeout(checkUpdateing, 100);
-  };
-  checkUpdateing();
-});
+export const waitForUpdate = (): Promise<void> =>
+  new Promise<void>((res) => {
+    void CommonConsts.updatePromise.then(() => {
+      CommonConsts.resolveUpdate = res;
+    });
+  });
+
 export const updateSoundStatus = async (): Promise<void> => {
-  await waitForUpdate;
-  CommonConsts.isUpdatingStatus = true;
-  const { state: NotificationSettingsState } = NotificationSettingsStore.__getLocalVars();
-  const toToggle = ["mute", "unmute"].filter(
-    (m: string): boolean => !NotificationSettingsStore.isSoundDisabled(m),
-  );
-  NotificationSettingsState.disabledSounds.push(...toToggle);
+  await CommonConsts.updatePromise;
+  CommonConsts.updatePromise = waitForUpdate();
   await MediaEngineActions.toggleSelfMute();
-  await sleep(100);
+  await util.sleep(100);
   await MediaEngineActions.toggleSelfMute();
-  NotificationSettingsState.disabledSounds = NotificationSettingsState.disabledSounds.filter(
-    (m: string): boolean => !toToggle.includes(m),
-  );
-  CommonConsts.isUpdatingStatus = false;
+  CommonConsts.resolveUpdate();
 };
 export const toggleSoundStatus = (enabled: boolean): void => {
   if (SettingValues.get("playAudio", defaultSettings.playAudio))
     SoundUtils.playSound(enabled ? Sounds.Disable : Sounds.Enable, 0.5);
   SettingValues.set("enabled", !enabled);
   if (SettingValues.get("userPanel", defaultSettings.userPanel))
-    forceUpdate(document.querySelector(`.${AccountDetailsClasses.container}:not(.spotify-modal)`));
+    void forceRerenderElement(`.${AccountDetailsClasses.container}:not(.spotify-modal)`);
 };
-export const useSetting = (
-  settingsManager: typeof SettingValues,
-  path: string,
-  defaultValue?: string | boolean,
-  options?: { clearable?: boolean },
+export const useSetting = <
+  T extends Record<string, Types.Jsonifiable>,
+  D extends keyof T,
+  K extends Extract<keyof T, string>,
+  F extends Types.NestedType<T, P> | T[K] | undefined,
+  P extends `${K}.${string}` | K,
+>(
+  settings: settings.SettingsManager<T, D>,
+  key: P,
+  fallback?: F,
 ): {
-  value: string | boolean;
-  onChange: (newValue: string | { value: string }) => void;
-  onClear?: () => void;
+  value: Types.NestedType<T, P> | F;
+  onChange: (newValue: Types.ValType<Types.NestedType<T, P> | F>) => void;
 } => {
-  const { clearable = false } = options ?? {};
-  const [key, ...realPath] = path.split(".");
-  const realPathJoined = realPath.join(".");
-  const setting = settingsManager.get(key as keyof Types.Settings);
-  const initial = realPath.length
-    ? lodash.get(setting, realPathJoined, defaultValue)
-    : (setting as string);
-  const [value, setValue] = React.useState(initial);
+  const [initialKey, ...pathArray] = Object.keys(settings.all()).includes(key)
+    ? ([key] as [K])
+    : (key.split(".") as [K, ...string[]]);
+  const path = pathArray.join(".");
+  const initial = settings.get(initialKey, path.length ? ({} as T[K]) : (fallback as T[K]));
+  const [value, setValue] = React.useState<Types.NestedType<T, P>>(
+    path.length
+      ? (lodash.get(initial, path, fallback) as Types.NestedType<T, P>)
+      : (initial as Types.NestedType<T, P>),
+  );
 
   return {
     value,
-    onClear: clearable
-      ? () => {
-          setValue("");
-          const changed = realPath.length
-            ? lodash.set(setting as object, realPathJoined, "")
-            : ("" as never);
-          settingsManager.set(key as keyof Types.Settings, changed);
-        }
-      : () => null,
-    onChange: (newValue) => {
-      if (typeof newValue == "object" && Object.hasOwnProperty.call(newValue, "value"))
-        newValue = newValue.value;
-      setValue(newValue as unknown as string);
-      const changed = realPath.length
-        ? lodash.set(setting as object, realPathJoined, newValue)
-        : (newValue as never);
-      settingsManager.set(key as keyof Types.Settings, changed);
+    onChange: (newValue: Types.ValType<Types.NestedType<T, P> | F>) => {
+      const isObj = newValue && typeof newValue === "object";
+      const value = isObj && "value" in newValue ? newValue.value : newValue;
+      const checked = isObj && "checked" in newValue ? newValue.checked : void 0;
+      const target =
+        isObj && "target" in newValue && newValue.target && typeof newValue.target === "object"
+          ? newValue.target
+          : void 0;
+      const targetValue = target && "value" in target ? target.value : void 0;
+      const targetChecked = target && "checked" in target ? target.checked : void 0;
+      const finalValue = checked ?? targetChecked ?? targetValue ?? value ?? newValue;
+
+      setValue(finalValue as Types.NestedType<T, P>);
+      settings.set(
+        initialKey,
+        path.length ? (lodash.set(initial, path, finalValue) as T[K]) : (finalValue as T[K]),
+      );
     },
   };
 };
+
+export * as default from "./utils";

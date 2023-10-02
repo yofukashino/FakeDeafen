@@ -1,16 +1,13 @@
 import { common, components, webpack } from "replugged";
 import CloseButton from "./CloseButton";
-import * as Utils from "../lib/utils";
-import * as Types from "../types";
+import Types from "../types";
 const { React } = common;
 const { FormItem } = components;
 
 export default (props: Types.KeybindRecorderItemProps) => {
-  const KeybindRecorder = webpack.getModule<Types.ComponentClass>((m) =>
-    Utils.prototypeChecker(m?.exports, ["handleComboChange", "cleanUp"]),
-  );
+  const KeybindRecorder = webpack.getBySource<React.ComponentClass>("handleComboChange");
   props.clearable = props.clearable ?? true;
-  const [value, setValue] = React.useState(props.value);
+  const [value, setValue] = React.useState<Array<Array<number>>>(props.value);
   const clear = () => {
     setValue([]);
     props.onChange([]);
@@ -26,6 +23,7 @@ export default (props: Types.KeybindRecorderItemProps) => {
       }}>
       <div
         {...{
+          className: "keybindRecorder-container",
           style: {
             display: "flex",
             justifyContent: "space-between",
@@ -49,7 +47,7 @@ export default (props: Types.KeybindRecorderItemProps) => {
             }}
           />
         </div>
-        {props.clearable && (
+        {props.clearable && value.length && (
           <div
             {...{
               style: {
@@ -60,6 +58,7 @@ export default (props: Types.KeybindRecorderItemProps) => {
             }}>
             <CloseButton
               {...{
+                className: "closeButton",
                 onClick: () => clear(),
               }}
             />

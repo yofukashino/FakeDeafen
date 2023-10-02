@@ -1,10 +1,15 @@
-import * as Types from "../types";
-export const sound = (width: number | string, height: number | string): Types.ReactElement => (
+export const sound = (
+  width: number | string,
+  height: number | string,
+  style?: React.CSSProperties,
+  children?: React.ReactElement,
+): React.ReactElement => (
   <svg
     {...{
       viewBox: "0 0 24 24",
       width,
       height,
+      style,
     }}>
     <path
       {...{
@@ -38,5 +43,8 @@ export const sound = (width: number | string, height: number | string): Types.Re
         d: "M12 12.5a.75.75 0 0 1 .564.256l7 8A.75.75 0 0 1 19 22H5a.75.75 0 0 1-.564-1.244l7-8A.75.75 0 0 1 12 12.5Z",
       }}
     />
+    {children}
   </svg>
 );
+
+export * as default from "./Icons";
