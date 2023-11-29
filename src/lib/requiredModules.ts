@@ -40,7 +40,6 @@ export const AccountDetailsClasses = webpack.getByProps<Types.AccountDetailsClas
   "container",
 );
 
-export const AudioResolver = webpack.getBySource<{ exports: Types.DefaultTypes.AnyFunction }>(
-  "./mute.mp3",
-  { raw: true },
-);
+export const AudioResolverPromise = webpack.waitForModule<{
+  exports: Types.DefaultTypes.AnyFunction;
+}>(webpack.filters.bySource("./mute.mp3"), { raw: true });

@@ -1,10 +1,10 @@
 import { PluginInjector } from "../index";
-import { AudioResolver } from "../lib/requiredModules";
+import { AudioResolverPromise } from "../lib/requiredModules";
 import { Sounds } from "../lib/consts";
 
-export default (): void => {
+export default async (): Promise<void> => {
+  const AudioResolver = await AudioResolverPromise;
   PluginInjector.instead(AudioResolver, "exports", ([sound]: [string], res) => {
-    console.log(sound);
     switch (sound) {
       case `./${Sounds.Enable}.mp3`: {
         return Sounds.EnableURL;
