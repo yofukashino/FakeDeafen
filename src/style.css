@@ -4,5 +4,6 @@
 }
 
 .keybindRecorder-container:not(:hover) .closeButton {
+  color: var(----interactive-hover);
   display: none;
 }

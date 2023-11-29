@@ -1,60 +1,14 @@
-import { common, settings, util } from "replugged";
-import { CommonConsts, PluginInjector, SettingValues, lodash } from "../index";
-import { AccountDetailsClasses, MediaEngineActions, SoundUtils } from "./requiredModules";
+import { settings, util } from "replugged";
+import { React, channels as UltimateChannelStore, lodash } from "replugged/common";
+import { PluginInjector, PluginLogger, SettingValues } from "../index";
+import {
+  AccountDetailsClasses,
+  GatewayConnectionStore,
+  MediaEngineStore,
+  SoundUtils,
+} from "./requiredModules";
 import { Sounds, defaultSettings } from "./consts";
 import Types from "../types";
-const { React } = common;
-
-export const findInTree = (
-  tree: object,
-  searchFilter: Types.DefaultTypes.AnyFunction | string,
-  searchOptions?: { ignore?: string[]; walkable?: null | string[]; maxRecrusions?: number },
-): unknown => {
-  const { walkable = null, ignore = [], maxRecrusions = Infinity } = searchOptions ?? {};
-  if (maxRecrusions == 0) return;
-  if (typeof searchFilter === "string") {
-    if (Object.hasOwnProperty.call(tree, searchFilter)) return tree[searchFilter];
-  } else if (searchFilter(tree)) {
-    return tree;
-  }
-  if (typeof tree !== "object" || tree == null) return;
-
-  let tempReturn: unknown;
-  if (Array.isArray(tree)) {
-    for (const value of tree) {
-      tempReturn = findInTree(value, searchFilter, {
-        walkable,
-        ignore,
-        maxRecrusions: maxRecrusions - 1,
-      });
-      if (typeof tempReturn !== "undefined") return tempReturn;
-    }
-  } else {
-    const toWalk = walkable == null ? Object.keys(tree) : walkable;
-    for (const key of toWalk) {
-      if (!Object.hasOwnProperty.call(tree, key) || ignore.includes(key)) continue;
-      tempReturn = findInTree(tree[key], searchFilter, {
-        walkable,
-        ignore,
-        maxRecrusions: maxRecrusions - 1,
-      });
-      if (typeof tempReturn !== "undefined") return tempReturn;
-    }
-  }
-  return tempReturn;
-};
-
-export const findInReactTree = (
-  tree: React.ReactElement,
-  searchFilter: Types.DefaultTypes.AnyFunction | string,
-  searchOptions?: { maxRecrusions?: number },
-): unknown | React.ReactElement => {
-  const { maxRecrusions = Infinity } = searchOptions ?? {};
-  return findInTree(tree, searchFilter, {
-    walkable: ["props", "children", "child", "sibling"],
-    maxRecrusions,
-  });
-};
 
 export const forceRerenderElement = async (selector: string): Promise<void> => {
   const element = await util.waitFor(selector);
@@ -66,24 +20,36 @@ export const forceRerenderElement = async (selector: string): Promise<void> => {
   });
   ownerInstance.forceUpdate(() => ownerInstance.forceUpdate(() => {}));
 };
-export const waitForUpdate = (): Promise<void> =>
-  new Promise<void>((res) => {
-    void CommonConsts.updatePromise.then(() => {
-      CommonConsts.resolveUpdate = res;
-    });
-  });
 
-export const updateSoundStatus = async (): Promise<void> => {
-  await CommonConsts.updatePromise;
-  CommonConsts.updatePromise = waitForUpdate();
-  await MediaEngineActions.toggleSelfMute();
-  await util.sleep(100);
-  await MediaEngineActions.toggleSelfMute();
-  CommonConsts.resolveUpdate();
+export const updateSoundStatus = (): void => {
+  const Channel = UltimateChannelStore.getChannel(UltimateChannelStore.getVoiceChannelId());
+
+  if (!Channel) return;
+  PluginLogger.log("Updating Voice State.");
+  GatewayConnectionStore.getSocket().voiceStateUpdate({
+    channelId: Channel.id,
+    guildId: Channel.guild_id,
+    selfDeaf: SettingValues.get("enabled", defaultSettings.enabled)
+      ? SettingValues.get("soundStatus", defaultSettings.soundStatus).deaf ||
+        MediaEngineStore.isDeaf()
+      : MediaEngineStore.isDeaf(),
+    selfMute: SettingValues.get("enabled", defaultSettings.enabled)
+      ? SettingValues.get("soundStatus", defaultSettings.soundStatus).mute ||
+        MediaEngineStore.isMute()
+      : MediaEngineStore.isMute(),
+    selfVideo: SettingValues.get("enabled", defaultSettings.enabled)
+      ? SettingValues.get("soundStatus", defaultSettings.soundStatus).video ||
+        MediaEngineStore.isVideoEnabled()
+      : MediaEngineStore.isVideoEnabled(),
+  });
 };
 export const toggleSoundStatus = (enabled: boolean): void => {
-  if (SettingValues.get("playAudio", defaultSettings.playAudio))
+  if (
+    (enabled && (SettingValues.get("playAudio", defaultSettings.playAudio).disable ?? true)) ||
+    (!enabled && (SettingValues.get("playAudio", defaultSettings.playAudio).enable ?? true))
+  ) {
     SoundUtils.playSound(enabled ? Sounds.Disable : Sounds.Enable, 0.5);
+  }
   SettingValues.set("enabled", !enabled);
   if (SettingValues.get("userPanel", defaultSettings.userPanel))
     void forceRerenderElement(`.${AccountDetailsClasses.container}:not(.spotify-modal)`);
@@ -136,4 +102,4 @@ export const useSetting = <
   };
 };
 
-export * as default from "./utils";
+export default { ...util, forceRerenderElement, updateSoundStatus, toggleSoundStatus, useSetting };

@@ -8,18 +8,13 @@ export const WindowInfoStore = webpack.getByProps<Types.WindowInfoStore>(
   "removeChangeListener",
 );
 
-export const SoundUtilsModule = webpack.getBySource<Types.GenericModule>("discodo:");
-export const SoundUtils = {
-  createSound: webpack.getFunctionBySource(SoundUtilsModule, "return new"),
-  createSoundpackSound: webpack.getFunctionBySource(SoundUtilsModule, ");return"),
-  playSound: webpack.getFunctionBySource(SoundUtilsModule, "getSoundpack"),
-} as Types.SoundUtils;
+export const SoundUtils = webpack.getByProps<Types.SoundUtils>(
+  "playSound",
+  "createSound",
+  "createSoundForPack",
+);
 
-export const KeybindUtilsModule = webpack.getBySource<Types.GenericModule>("numpad plus");
-export const KeybindUtils = {
-  toCombo: webpack.getFunctionBySource(KeybindUtilsModule, "numpad plus"),
-  toEvent: webpack.getFunctionBySource(KeybindUtilsModule, "{keyCode:0,"),
-} as Types.KeybindUtils;
+export const KeybindUtils = webpack.getByProps<Types.KeybindUtils>("toCombo");
 
 export const StatusPickerClasses = webpack.getByProps<Types.StatusPickerClasses>(
   "status",
@@ -29,21 +24,23 @@ export const StatusPickerClasses = webpack.getByProps<Types.StatusPickerClasses>
 export const GatewayConnectionStore =
   webpack.getBySource<Types.GatewayConnectionStore>("GatewayConnectionStore");
 
-export const MediaEngineActions = webpack.getByProps<Types.MediaEngineActions>(
-  "toggleSelfMute",
-  "toggleSelfDeaf",
-);
+export const MediaEngineStore = webpack.getByStoreName<Types.MediaEngineStore>("MediaEngineStore");
 
-export const NotificationSettingsStore = webpack.getByProps<Types.NotificationSettingsStore>(
-  "getDesktopType",
-  "isSoundDisabled",
-);
-
-export const PanelButton = webpack.getBySource<React.ComponentClass>("Masks.PANEL_BUTTON");
+export const PanelButton = webpack.getBySource<
+  React.ComponentClass<{
+    onContextMenu?: (event: React.MouseEvent) => void;
+    icon?: () => React.ReactNode;
+    tooltipText?: string;
+    onClick?: () => void;
+  }>
+>("Masks.PANEL_BUTTON");
 
 export const AccountDetailsClasses = webpack.getByProps<Types.AccountDetailsClasses>(
   "godlike",
   "container",
 );
 
-export const ElectronModule = webpack.getByProps<Types.ElectronModule>("setBadge");
+export const AudioResolver = webpack.getBySource<{ exports: Types.DefaultTypes.AnyFunction }>(
+  "./mute.mp3",
+  { raw: true },
+);

@@ -1,10 +1,8 @@
-import { components } from "replugged";
+import { contextMenu as ContextMenuApi } from "replugged/common";
+import { ContextMenu } from "replugged/components";
 import { SettingValues } from "../index";
 import { defaultSettings } from "../lib/consts";
 import Utils from "../lib/utils";
-const {
-  ContextMenu: { MenuCheckboxItem, ContextMenu, MenuSeparator, MenuItem },
-} = components;
 
 export default (props) => {
   const { value: muteValue, onChange: muteOnChange } = Utils.useSetting(
@@ -23,38 +21,27 @@ export default (props) => {
     defaultSettings.soundStatus.video,
   );
   return (
-    <ContextMenu {...{ ...props, navId: "tharki" }}>
-      <MenuItem
-        {...{
-          label: "What to fake?",
-          id: "what-to-fake",
-        }}
+    <ContextMenu.ContextMenu {...props} navId="tharki" onClose={ContextMenuApi.close}>
+      <ContextMenu.MenuItem label="What to fake?" id="what-to-fake" />
+      <ContextMenu.MenuSeparator />
+      <ContextMenu.MenuCheckboxItem
+        id="mute"
+        label="Mute"
+        checked={muteValue}
+        action={() => muteOnChange(!muteValue)}
       />
-      <MenuSeparator />
-      <MenuCheckboxItem
-        {...{
-          id: "mute",
-          label: "Mute",
-          checked: muteValue as boolean,
-          action: () => muteOnChange(!muteValue),
-        }}
+      <ContextMenu.MenuCheckboxItem
+        id="deafen"
+        label="Deafen"
+        checked={deafValue}
+        action={() => deafOnChange(!deafValue)}
       />
-      <MenuCheckboxItem
-        {...{
-          id: "deafen",
-          label: "Deafen",
-          checked: deafValue as boolean,
-          action: () => deafOnChange(!deafValue),
-        }}
+      <ContextMenu.MenuCheckboxItem
+        id="video"
+        label="Video"
+        checked={videoValue}
+        action={() => videoOnChange(!videoValue)}
       />
-      <MenuCheckboxItem
-        {...{
-          id: "video",
-          label: "Video",
-          checked: videoValue as boolean,
-          action: () => videoOnChange(!videoValue),
-        }}
-      />
-    </ContextMenu>
+    </ContextMenu.ContextMenu>
   );
 };

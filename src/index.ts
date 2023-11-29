@@ -1,24 +1,12 @@
-import { Injector, Logger, common, components, settings } from "replugged";
+import { Injector, Logger, settings } from "replugged";
 import { defaultSettings } from "./lib/consts";
 import "./style.css";
 import { registerSettings } from "./Components/Settings";
-export const CommonConsts = {
-  isUpdatingStatus: false,
-  resolveUpdate: () => void 0,
-  updatePromise: new Promise<void>((res) => res()),
-  CurrentlyPressed: new Map(),
-};
+export const CurrentlyPressed = new Map();
 export const PluginInjector = new Injector();
 export const { utils: PluginInjectorUtils } = PluginInjector;
 export const PluginLogger = Logger.plugin("FakeDeafen");
 export const SettingValues = await settings.init("dev.tharki.FakeDeafen", defaultSettings);
-export const {
-  toast: Toasts,
-  fluxDispatcher: FluxDispatcher,
-  contextMenu: ContextMenuApi,
-  lodash,
-} = common;
-export const { ContextMenu } = components;
 
 import { applyInjections } from "./patches/index";
 import { addListeners, removeListeners } from "./listeners/index";

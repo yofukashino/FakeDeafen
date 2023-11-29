@@ -10,4 +10,13 @@ export default [
       },
     ],
   },
+  {
+    find: ".Messages.USER_SETTINGS_SOUNDBOARD_VOLUME,",
+    replacements: [
+      {
+        match: /null==\w+\?void 0:\w+\.selfDeaf/,
+        replace: `$&&&replugged.webpack.getByStoreName("MediaEngineStore").isDeaf()`,
+      },
+    ],
+  },
 ] as Types.DefaultTypes.PlaintextPatch[];

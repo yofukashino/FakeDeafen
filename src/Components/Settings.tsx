@@ -1,4 +1,4 @@
-import { components, util } from "replugged";
+import { components } from "replugged";
 import { PluginLogger, SettingValues } from "../index";
 import { defaultSettings } from "../lib/consts";
 const { SwitchItem, Category } = components;
@@ -6,6 +6,8 @@ import KeybindItem from "./KeybindItem";
 import Utils from "../lib/utils";
 import Types from "../types";
 export const registerSettings = (): void => {
+  if (typeof SettingValues.get("playAudio", defaultSettings.playAudio) === "boolean")
+    SettingValues.delete("playAudio");
   for (const key in defaultSettings) {
     if (SettingValues.has(key as keyof Types.Settings)) return;
     PluginLogger.log(`Adding new setting ${key} with value`, defaultSettings[key]);
@@ -15,87 +17,80 @@ export const registerSettings = (): void => {
 export const Settings = (): React.ReactElement => {
   return (
     <div>
-      <Category
-        {...{
-          title: "What to fake?",
-          note: "The Options you want to fake in VC.",
-          open: true,
-        }}>
+      <Category title="What to fake?" note="The Options you want to fake in VC." open={true}>
         <SwitchItem
-          {...{
-            note: "Whether you want to fake mute or not.",
-            ...Utils.useSetting(
-              SettingValues,
-              "soundStatus.mute",
-              defaultSettings.soundStatus.mute,
-            ),
-          }}>
+          note="Whether you want to fake mute or not."
+          {...Utils.useSetting(
+            SettingValues,
+            "soundStatus.mute",
+            defaultSettings.soundStatus.mute,
+          )}>
           Mute
         </SwitchItem>
         <SwitchItem
-          {...{
-            note: "Whether you want to fake deafen or not.",
-            ...Utils.useSetting(
-              SettingValues,
-              "soundStatus.deaf",
-              defaultSettings.soundStatus.deaf,
-            ),
-          }}>
+          note="Whether you want to fake deafen or not."
+          {...Utils.useSetting(
+            SettingValues,
+            "soundStatus.deaf",
+            defaultSettings.soundStatus.deaf,
+          )}>
           Deafen
         </SwitchItem>
         <SwitchItem
-          {...{
-            note: "Whether you want to fake video or not.",
-            ...Utils.useSetting(
-              SettingValues,
-              "soundStatus.video",
-              defaultSettings.soundStatus.video,
-            ),
-          }}>
+          note="Whether you want to fake video or not."
+          {...Utils.useSetting(
+            SettingValues,
+            "soundStatus.video",
+            defaultSettings.soundStatus.video,
+          )}>
           Video
         </SwitchItem>
       </Category>
       <Category
-        {...{
-          title: "Toggle Options",
-          note: "Ways to toggle game activity status on current user.",
-          open: false,
-        }}>
+        title="Toggle Options"
+        note="Ways to toggle game activity status on the current user."
+        open={false}>
         <KeybindItem
-          {...{
-            title: "Toggle by keybind:",
-            note: "Keybind to toggle showing game activity.",
-            ...util.useSetting(SettingValues, "keybind", defaultSettings.keybind),
-          }}
+          title="Toggle by keybind:"
+          note="Keybind to toggle showing game activity."
+          {...Utils.useSetting(SettingValues, "keybind", defaultSettings.keybind)}
         />
         <SwitchItem
-          {...{
-            note: "Show toasts on using keybind.",
-            ...util.useSetting(SettingValues, "showToast", defaultSettings.showToast),
-          }}>
+          note="Show toasts on using the keybind."
+          {...Utils.useSetting(SettingValues, "showToast", defaultSettings.showToast)}>
           Show toasts
         </SwitchItem>
         <SwitchItem
-          {...{
-            note: "Add an option in the status picker to toggle showing your game activity.",
-            ...util.useSetting(SettingValues, "statusPicker", defaultSettings.statusPicker),
-          }}>
+          note="Add an option in the status picker to toggle showing your game activity."
+          {...Utils.useSetting(SettingValues, "statusPicker", defaultSettings.statusPicker)}>
           Status picker
         </SwitchItem>
         <SwitchItem
-          {...{
-            note: "Add a button in the user panel to toggle showing your game activity.",
-            ...util.useSetting(SettingValues, "userPanel", defaultSettings.userPanel),
-          }}>
+          note="Add a button in the user panel to toggle showing your game activity."
+          {...Utils.useSetting(SettingValues, "userPanel", defaultSettings.userPanel)}>
           User panel
         </SwitchItem>
-        <SwitchItem
-          {...{
-            note: "Play a sound upon using the keybind or clicking the button in the status picker or user panel.",
-            ...util.useSetting(SettingValues, "playAudio", defaultSettings.playAudio),
-          }}>
-          Play audio
-        </SwitchItem>
+        <Category
+          title="Play audio"
+          note="Play a sound upon using the keybind or clicking the button in the status picker or user panel."
+          open={true}>
+          <SwitchItem
+            {...Utils.useSetting(
+              SettingValues,
+              "playAudio.enable",
+              defaultSettings.playAudio.enable,
+            )}>
+            Enable
+          </SwitchItem>
+          <SwitchItem
+            {...Utils.useSetting(
+              SettingValues,
+              "playAudio.disable",
+              defaultSettings.playAudio.disable,
+            )}>
+            Disable
+          </SwitchItem>
+        </Category>
       </Category>
     </div>
   );
