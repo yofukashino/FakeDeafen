@@ -8,7 +8,7 @@ import Types from "../types";
 export default (): void => {
   PluginInjectorUtils.addMenuItem(Types.DefaultTypes.ContextMenuTypes.Account, (_data, menu) => {
     if (!SettingValues.get("statusPicker", defaultSettings.statusPicker)) return;
-    /* const { value: muteValue, onChange: muteOnChange } = Utils.useSetting(
+    const { value: muteValue, onChange: muteOnChange } = Utils.useSetting(
       SettingValues,
       "soundStatus.mute",
       defaultSettings.soundStatus.mute,
@@ -22,7 +22,7 @@ export default (): void => {
       SettingValues,
       "soundStatus.video",
       defaultSettings.soundStatus.video,
-    ); */
+    );
     const enabled = SettingValues.get("enabled", defaultSettings.enabled);
     const Icon = (
       <Icons.sound
@@ -67,7 +67,7 @@ export default (): void => {
           action={() => Utils.toggleSoundStatus(enabled)}
           icon={() => (enabled ? DisabledIcon : Icon)}
           showIconFirst={true}>
-          {/*   <ContextMenu.MenuItem label="What to fake?" id="what-to-fake" />
+          <ContextMenu.MenuItem label="What to fake?" id="what-to-fake" />
           <ContextMenu.MenuSeparator />
           <ContextMenu.MenuCheckboxItem
             id="mute"
@@ -86,7 +86,7 @@ export default (): void => {
             label="Video"
             checked={videoValue as boolean}
             action={() => videoOnChange(!videoValue)}
-          /> */}
+          />
         </ContextMenu.MenuItem>,
       );
   });
