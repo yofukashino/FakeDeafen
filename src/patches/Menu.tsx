@@ -57,6 +57,7 @@ export default (): void => {
         <ContextMenu.MenuGroup className="tharki" children={[]} />,
       );
     const section = children.find((c) => c?.props?.className === "tharki");
+    section.props.children = section.props.children.filter((m) => m?.props?.id !== "fake-deafen");
     if (!section.props.children.find((m) => m?.props?.id === "fake-deafen"))
       section.props.children.push(
         <ContextMenu.MenuItem
