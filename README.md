@@ -4,11 +4,11 @@ Show that you are deafened to others, while in reality you can still hear them.
 
 It's also possible to fake mute and fake video.
 
-Direct Download Link: [dev.tharki.FakeDeafen.asar](https://github.com/TharkiDev/FakeDeafen/releases/latest/download/dev.tharki.FakeDeafen.asar)
+Direct Download Link: [dev.tharki.FakeDeafen.asar](https://github.com/YofukashiNo/FakeDeafen/releases/latest/download/dev.tharki.FakeDeafen.asar)
 
 Install Link:
 
-[![Install in Replugged](https://img.shields.io/badge/-Install%20in%20Replugged-blue?style=for-the-badge&logo=none)](https://replugged.dev/install?identifier=TharkiDev/FakeDeafen&source=github)
+[![Install in Replugged](https://img.shields.io/badge/-Install%20in%20Replugged-blue?style=for-the-badge&logo=none)](https://replugged.dev/install?identifier=YofukashiNo/FakeDeafen&source=github)
 
 ![fake deaf](https://i.imgur.com/hLCUDCO.gif)
 

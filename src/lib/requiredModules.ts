@@ -1,45 +1,43 @@
 import { webpack } from "replugged";
 import Types from "../types";
 
-export const WindowInfoStore = webpack.getByProps<Types.WindowInfoStore>(
-  "isFocused",
-  "isElementFullScreen",
-  "addChangeListener",
-  "removeChangeListener",
-);
+export const Modules: Types.Modules = {};
 
-export const SoundUtils = webpack.getByProps<Types.SoundUtils>(
-  "playSound",
-  "createSound",
-  "createSoundForPack",
-);
+Modules.loadModules = async (): Promise<void> => {
+  Modules.WindowInfoStore ??= await webpack.waitForProps<Types.WindowInfoStore>(
+    "isFocused",
+    "isElementFullScreen",
+    "addChangeListener",
+    "removeChangeListener",
+  );
 
-export const KeybindUtils = webpack.getByProps<Types.KeybindUtils>("toCombo");
+  Modules.SoundUtils ??= await webpack.waitForProps<Types.SoundUtils>(
+    "playSound",
+    "createSound",
+    "createSoundForPack",
+  );
+  Modules.KeybindUtils ??= await webpack.waitForProps<Types.KeybindUtils>("toCombo");
 
-export const StatusPickerClasses = webpack.getByProps<Types.StatusPickerClasses>(
-  "status",
-  "statusItem",
-);
+  Modules.GatewayConnection ??= await webpack.waitForProps("Opcode");
 
-export const GatewayConnectionStore =
-  webpack.getBySource<Types.GatewayConnectionStore>("GatewayConnectionStore");
+  Modules.CenterControlTray ??= await webpack.waitForProps<Types.CenterControlTray>("GoLiveButton");
+  Modules.CenterControlButton ??= await webpack
+    .waitForProps<{
+      CenterControlButton: Types.CenterControlButton;
+    }>("CenterControlButton")
+    .then(({ CenterControlButton }) => CenterControlButton);
+  Modules.IdleHandler ??= await webpack.waitForProps<Types.IdleHandler>("usePreventIdle");
+  Modules.PanelButton ??= await webpack.waitForModule<Types.PanelButton>(
+    webpack.filters.bySource("Masks.PANEL_BUTTON"),
+  );
 
-export const MediaEngineStore = webpack.getByStoreName<Types.MediaEngineStore>("MediaEngineStore");
+  Modules.AudioResolverPromise = webpack.waitForModule<Types.AudioResolver>(
+    webpack.filters.bySource("./mute.mp3"),
+    { raw: true },
+  );
+  Modules.GatewayConnectionStore ??=
+    webpack.getByStoreName<Types.GatewayConnectionStore>("GatewayConnectionStore");
+  Modules.MediaEngineStore ??= webpack.getByStoreName<Types.MediaEngineStore>("MediaEngineStore");
+};
 
-export const PanelButton = webpack.getBySource<
-  React.ComponentClass<{
-    onContextMenu?: (event: React.MouseEvent) => void;
-    icon?: () => React.ReactNode;
-    tooltipText?: string;
-    onClick?: () => void;
-  }>
->("Masks.PANEL_BUTTON");
-
-export const AccountDetailsClasses = webpack.getByProps<Types.AccountDetailsClasses>(
-  "godlike",
-  "container",
-);
-
-export const AudioResolverPromise = webpack.waitForModule<{
-  exports: Types.DefaultTypes.AnyFunction;
-}>(webpack.filters.bySource("./mute.mp3"), { raw: true });
+export default Modules;

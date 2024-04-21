@@ -3,45 +3,49 @@ import { ContextMenu } from "replugged/components";
 import { SettingValues } from "../index";
 import { defaultSettings } from "../lib/consts";
 import Utils from "../lib/utils";
-
-export default (props) => {
-  const { value: muteValue, onChange: muteOnChange } = Utils.useSetting(
+import Types from "../types";
+export default (props: Types.MenuProps | { onClose: Types.DefaultTypes.AnyFunction }) => {
+  const [muteValue, muteOnChange] = Utils.useSettingArray(
     SettingValues,
     "soundStatus.mute",
     defaultSettings.soundStatus.mute,
   );
-  const { value: deafValue, onChange: deafOnChange } = Utils.useSetting(
+  const [deafValue, deafOnChange] = Utils.useSettingArray(
     SettingValues,
     "soundStatus.deaf",
     defaultSettings.soundStatus.deaf,
   );
-  const { value: videoValue, onChange: videoOnChange } = Utils.useSetting(
+  const [videoValue, videoOnChange] = Utils.useSettingArray(
     SettingValues,
     "soundStatus.video",
     defaultSettings.soundStatus.video,
   );
   return (
-    <ContextMenu.ContextMenu {...props} navId="tharki" onClose={ContextMenuApi.close}>
-      <ContextMenu.MenuItem label="What to fake?" id="what-to-fake" />
-      <ContextMenu.MenuSeparator />
-      <ContextMenu.MenuCheckboxItem
-        id="mute"
-        label="Mute"
-        checked={muteValue}
-        action={() => muteOnChange(!muteValue)}
-      />
-      <ContextMenu.MenuCheckboxItem
-        id="deafen"
-        label="Deafen"
-        checked={deafValue}
-        action={() => deafOnChange(!deafValue)}
-      />
-      <ContextMenu.MenuCheckboxItem
-        id="video"
-        label="Video"
-        checked={videoValue}
-        action={() => videoOnChange(!videoValue)}
-      />
+    <ContextMenu.ContextMenu
+      {...props}
+      navId="yofukashino"
+      onClose={props.onClose ?? ContextMenuApi.close}>
+      <ContextMenu.MenuGroup label="What to fake?">
+        <ContextMenu.MenuSeparator />
+        <ContextMenu.MenuCheckboxItem
+          id="mute"
+          label="Mute"
+          checked={muteValue}
+          action={() => muteOnChange(!muteValue)}
+        />
+        <ContextMenu.MenuCheckboxItem
+          id="deafen"
+          label="Deafen"
+          checked={deafValue}
+          action={() => deafOnChange(!deafValue)}
+        />
+        <ContextMenu.MenuCheckboxItem
+          id="video"
+          label="Video"
+          checked={videoValue}
+          action={() => videoOnChange(!videoValue)}
+        />
+      </ContextMenu.MenuGroup>
     </ContextMenu.ContextMenu>
   );
 };

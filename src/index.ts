@@ -1,25 +1,24 @@
 import { Injector, Logger, settings } from "replugged";
 import { defaultSettings } from "./lib/consts";
 import "./style.css";
-import { registerSettings } from "./Components/Settings";
-export const CurrentlyPressed = new Map();
 export const PluginInjector = new Injector();
 export const { utils: PluginInjectorUtils } = PluginInjector;
-export const PluginLogger = Logger.plugin("FakeDeafen");
+export const PluginLogger = Logger.plugin("FakeDeafen", "#b380ff");
 export const SettingValues = await settings.init("dev.tharki.FakeDeafen", defaultSettings);
-
-import { applyInjections } from "./patches/index";
-import { addListeners, removeListeners } from "./listeners/index";
+export const CurrentlyPressed = new Map();
+import Settings from "./Components/Settings";
+import Injections from "./injections/index";
+import Listeners from "./listeners/index";
 
 export const start = (): void => {
-  registerSettings();
-  applyInjections();
-  addListeners();
+  Settings.registerSettings();
+  void Injections.applyInjections();
+  void Listeners.addListeners();
 };
 
 export const stop = (): void => {
   PluginInjector.uninjectAll();
-  removeListeners();
+  Listeners.removeListeners();
 };
 
 export { default as _addPanelButton } from "./Components/AccountDetailsButton";

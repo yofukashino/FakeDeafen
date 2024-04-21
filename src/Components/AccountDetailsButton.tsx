@@ -1,18 +1,23 @@
 import { plugins } from "replugged";
-import { contextMenu as ContextMenuApi } from "replugged/common";
+import { contextMenu as ContextMenuApi, React } from "replugged/common";
 import { SettingValues } from "../index";
-import { PanelButton } from "../lib/requiredModules";
+import Modules from "../lib/requiredModules";
 import { defaultSettings } from "../lib/consts";
 import FakeDeafenContextMenu from "./ContextMenu";
 import Icons from "../Components/Icons";
 import Utils from "../lib/utils";
-export default (): React.ReactElement | null => {
+export const AccountDetailsButton = () => {
   if (
     !SettingValues.get("userPanel", defaultSettings.userPanel) ||
     plugins.getDisabled().includes("dev.tharki.FakeDeafen")
   )
     return null;
-  const enabled = SettingValues.get("enabled", defaultSettings.enabled);
+  const [enabled, setEnabled] = React.useState(
+    SettingValues.get("enabled", defaultSettings.enabled),
+  );
+  React.useEffect(() => {
+    setEnabled(SettingValues.get("enabled", defaultSettings.enabled));
+  }, [SettingValues.get("enabled", defaultSettings.enabled)]);
   const Icon = <Icons.sound width="20" height="20" />;
   const DisabledIcon = (
     <Icons.sound width="20" height="20">
@@ -25,10 +30,10 @@ export default (): React.ReactElement | null => {
     </Icons.sound>
   );
   return (
-    <PanelButton
+    <Modules.PanelButton
       onContextMenu={(event) =>
-        ContextMenuApi.open(event, (e) => (
-          <FakeDeafenContextMenu {...Object.assign({}, e, { onClose: ContextMenuApi.close })} />
+        ContextMenuApi.open(event, (props) => (
+          <FakeDeafenContextMenu onClose={ContextMenuApi.close} {...props} />
         ))
       }
       icon={() => (enabled ? DisabledIcon : Icon)}
@@ -37,3 +42,4 @@ export default (): React.ReactElement | null => {
     />
   );
 };
+export default () => (Modules.PanelButton ? <AccountDetailsButton /> : <></>);

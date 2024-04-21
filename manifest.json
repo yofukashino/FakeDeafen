@@ -3,16 +3,16 @@
   "name": "FakeDeafen",
   "description": "Fake your audio status, to make it look like you are muted or deafened from other's perspective when you're not.",
   "image": "https://i.imgur.com/hLCUDCO.gif",
-  "source": "https://github.com/TharkiDev/FakeDeafen",
+  "source": "https://github.com/YofukashiNo/FakeDeafen",
   "author": {
     "name": "Ahlawat",
     "discordID": "1121961711080050780",
-    "github": "TharkiDev"
+    "github": "YofukashiNo"
   },
   "version": "1.1.4",
   "updater": {
     "type": "github",
-    "id": "TharkiDev/FakeDeafen"
+    "id": "YofukashiNo/FakeDeafen"
   },
   "license": "MIT",
   "type": "replugged-plugin",

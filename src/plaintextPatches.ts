@@ -15,7 +15,7 @@ export default [
     replacements: [
       {
         match: /null==\w+\?void 0:\w+\.selfDeaf/,
-        replace: `$&&&replugged.webpack.getByStoreName("MediaEngineStore").isDeaf()`,
+        replace: `$&&&replugged.webpack.getByStoreName("MediaEngineStore")?.isDeaf?.()`,
       },
     ],
   },

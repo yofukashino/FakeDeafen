@@ -1,7 +1,6 @@
-import { components } from "replugged";
+import { Category, SwitchItem } from "replugged/components";
 import { PluginLogger, SettingValues } from "../index";
 import { defaultSettings } from "../lib/consts";
-const { SwitchItem, Category } = components;
 import KeybindItem from "./KeybindItem";
 import Utils from "../lib/utils";
 import Types from "../types";
@@ -48,11 +47,11 @@ export const Settings = (): React.ReactElement => {
       </Category>
       <Category
         title="Toggle Options"
-        note="Ways to toggle game activity status on the current user."
+        note="Ways to toggle voice status status on the current user."
         open={false}>
         <KeybindItem
           title="Toggle by keybind:"
-          note="Keybind to toggle showing game activity."
+          note="Keybind to toggle faking voice status."
           {...Utils.useSetting(SettingValues, "keybind", defaultSettings.keybind)}
         />
         <SwitchItem
@@ -61,14 +60,19 @@ export const Settings = (): React.ReactElement => {
           Show toasts
         </SwitchItem>
         <SwitchItem
-          note="Add an option in the status picker to toggle showing your game activity."
+          note="Add an option in the status picker to toggle faking voice status."
           {...Utils.useSetting(SettingValues, "statusPicker", defaultSettings.statusPicker)}>
           Status picker
         </SwitchItem>
         <SwitchItem
-          note="Add a button in the user panel to toggle showing your game activity."
+          note="Add a button in the user panel to toggle showing faking voice status."
           {...Utils.useSetting(SettingValues, "userPanel", defaultSettings.userPanel)}>
           User panel
+        </SwitchItem>
+        <SwitchItem
+          note="Add a button in the voice chat's center tray to toggle faking voice status."
+          {...Utils.useSetting(SettingValues, "userPanel", defaultSettings.userPanel)}>
+          Center Tray
         </SwitchItem>
         <Category
           title="Play audio"
@@ -95,3 +99,5 @@ export const Settings = (): React.ReactElement => {
     </div>
   );
 };
+
+export default { registerSettings, Settings };

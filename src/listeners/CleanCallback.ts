@@ -1,5 +1,5 @@
 import { CurrentlyPressed } from "../index";
-import { WindowInfoStore } from "../lib/requiredModules";
+import Modules from "../lib/requiredModules";
 export const cleanKeybindsCallback = (): void => {
-  if (WindowInfoStore.isFocused()) CurrentlyPressed.clear();
+  if (Modules.WindowInfoStore.isFocused()) CurrentlyPressed.clear();
 };

@@ -1,11 +1,11 @@
 import { PluginInjector, SettingValues } from "../index";
-import { GatewayConnectionStore } from "../lib/requiredModules";
 import { defaultSettings } from "../lib/consts";
+import Modules from "../lib/requiredModules";
 import Types from "../types";
 
 export default (): void => {
   PluginInjector.before(
-    GatewayConnectionStore.getSocket(),
+    Modules.GatewayConnectionStore.getSocket(),
     "voiceStateUpdate",
     (args: [Types.voiceStateUpdateArgs]) => {
       const [voiceStateUpdateArgs] = args;
