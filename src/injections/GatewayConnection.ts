@@ -5,7 +5,7 @@ import Types from "../types";
 
 export default (): void => {
   PluginInjector.before(
-    Modules.GatewayConnectionStore.getSocket(),
+    Modules.GatewayConnection.default.prototype,
     "voiceStateUpdate",
     (args: [Types.voiceStateUpdateArgs]) => {
       const [voiceStateUpdateArgs] = args;
