@@ -5,11 +5,11 @@
   "image": "https://i.imgur.com/pDJorfP.gif",
   "source": "https://github.com/YofukashiNo/FakeDeafen",
   "author": {
-    "name": "Ahlawat",
+    "name": "Nanakusa",
     "discordID": "1121961711080050780",
     "github": "YofukashiNo"
   },
-  "version": "1.1.4",
+  "version": "1.1.5",
   "updater": {
     "type": "github",
     "id": "YofukashiNo/FakeDeafen"

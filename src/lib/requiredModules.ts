@@ -18,7 +18,7 @@ Modules.loadModules = async (): Promise<void> => {
   );
   Modules.KeybindUtils ??= await webpack.waitForProps<Types.KeybindUtils>("toCombo");
 
-  Modules.GatewayConnection ??= await webpack.waitForProps("Opcode");
+  Modules.GatewayConnection ??= await webpack.waitForProps<Types.GatewayConnection>("Opcode");
 
   Modules.CenterControlTray ??= await webpack.waitForProps<Types.CenterControlTray>("GoLiveButton");
   Modules.CenterControlButton ??= await webpack

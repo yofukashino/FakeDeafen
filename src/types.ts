@@ -308,7 +308,7 @@ export namespace Types {
     VOICE_STATE_UPDATE = 4,
   }
   export interface GatewayConnection {
-    OpCode: typeof OpCode;
+    Opcode: typeof OpCode;
     default: DefaultTypes.AnyFunction;
   }
   export interface Modules {
