@@ -1,6 +1,6 @@
-[class*="withTagAsButton"] {
+[class^="panels_"] > [class^="container_"] > [class^="avatarWrapper_"] + div {
   min-width: 0;
-  flex: 1;
+  flex: 1 1 min-content !important;
 }
 
 .keybindRecorder-container:not(:hover) .closeButton {

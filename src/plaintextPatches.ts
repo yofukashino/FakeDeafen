@@ -5,8 +5,9 @@ export default [
     find: "isCopiedStreakGodlike",
     replacements: [
       {
-        match: /this\.renderNameZone\(\),\(0,.\.\w+\)\([\w_$]+.\w+,{grow:0,children:\[/,
-        replace: `$&replugged.plugins.getExports("dev.tharki.FakeDeafen")?._addPanelButton?.()??null,`,
+        match: /this\.renderNameZone\(\),\(0,.\.\w+\)\(.+?\.\w+,{grow:0,children:\[/,
+        replace: (suffix: string) =>
+          `${suffix}replugged.plugins.getExports("dev.tharki.FakeDeafen")?._addPanelButton?.()??null,`,
       },
     ],
   },
@@ -15,7 +16,8 @@ export default [
     replacements: [
       {
         match: /null==\w+\?void 0:\w+\.selfDeaf/,
-        replace: `$&&&replugged.webpack.getByStoreName("MediaEngineStore")?.isDeaf?.()`,
+        replace: (suffix: string) =>
+          `${suffix}&&replugged.webpack.getByStoreName("MediaEngineStore")?.isDeaf?.()`,
       },
     ],
   },

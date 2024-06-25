@@ -1,11 +1,17 @@
+import { webpack } from "replugged";
 import { PluginInjector, SettingValues } from "../index";
 import { defaultSettings } from "../lib/consts";
 import Modules from "../lib/requiredModules";
 import Types from "../types";
 
 export default (): void => {
+  const GatewayConnection = webpack.getFunctionBySource<Types.DefaultTypes.AnyFunction>(
+    Modules.GatewayConnection,
+    "voiceServerPing()",
+  );
+
   PluginInjector.before(
-    Modules.GatewayConnection.default.prototype,
+    GatewayConnection.prototype,
     "voiceStateUpdate",
     (args: [Types.voiceStateUpdateArgs]) => {
       const [voiceStateUpdateArgs] = args;

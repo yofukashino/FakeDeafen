@@ -71,7 +71,7 @@ export const Settings = (): React.ReactElement => {
         </SwitchItem>
         <SwitchItem
           note="Add a button in the voice chat's center tray to toggle faking voice status."
-          {...Utils.useSetting(SettingValues, "userPanel", defaultSettings.userPanel)}>
+          {...Utils.useSetting(SettingValues, "centerTray", defaultSettings.centerTray)}>
           Center Tray
         </SwitchItem>
         <Category

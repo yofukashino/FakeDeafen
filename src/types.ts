@@ -9,10 +9,8 @@ export namespace Types {
   export type UtilTree = util.Tree;
   export type ReactTree = util.Tree & React.ReactElement;
   export interface GenericModule extends Record<string, DefaultTypes.AnyFunction> {}
-  export interface WindowInfoStore {
+  export interface WindowStore extends Store {
     isFocused: () => boolean;
-    addChangeListener: (callback: DefaultTypes.AnyFunction) => void;
-    removeChangeListener: (callback: DefaultTypes.AnyFunction) => void;
     isElementFullScreen: () => boolean;
   }
   export interface AudioResolver {
@@ -313,14 +311,17 @@ export namespace Types {
   }
   export interface Modules {
     loadModules?: () => Promise<void>;
-    WindowInfoStore?: WindowInfoStore;
+    WindowStore?: WindowStore;
+    SoundUtilsModule?: GenericModule;
     SoundUtils?: SoundUtils;
+    KeybindUtilsModule?: GenericModule;
     KeybindUtils?: KeybindUtils;
     GatewayConnectionStore?: GatewayConnectionStore;
     GatewayConnection?: GatewayConnection;
     MediaEngineStore?: MediaEngineStore;
     CenterControlTray?: CenterControlTray;
     CenterControlButton?: CenterControlButton;
+    IdleHandlerModule?: GenericModule;
     IdleHandler?: IdleHandler;
     PanelButton?: PanelButton;
     AudioResolverPromise?: Promise<AudioResolver>;

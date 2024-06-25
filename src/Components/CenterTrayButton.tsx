@@ -15,9 +15,9 @@ export default (): React.ReactElement | null => {
   React.useEffect(() => {
     setEnabled(SettingValues.get("enabled", defaultSettings.enabled));
   }, [SettingValues.get("enabled", defaultSettings.enabled)]);
-  const Icon = <Icons.sound width="20" height="20" id="fake-deafen-enabled" />;
+  const Icon = <Icons.sound width="20" height="20" className="fake-deafen-enabled" />;
   const DisabledIcon = (
-    <Icons.sound width="20" height="20" id="fake-deafen-disabled">
+    <Icons.sound width="20" height="20" className="fake-deafen-disabled">
       <polygon
         style={{
           fill: "#a61616",

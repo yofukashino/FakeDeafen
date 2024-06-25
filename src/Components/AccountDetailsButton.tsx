@@ -18,6 +18,7 @@ export const AccountDetailsButton = () => {
   React.useEffect(() => {
     setEnabled(SettingValues.get("enabled", defaultSettings.enabled));
   }, [SettingValues.get("enabled", defaultSettings.enabled)]);
+
   const Icon = <Icons.sound width="20" height="20" />;
   const DisabledIcon = (
     <Icons.sound width="20" height="20">

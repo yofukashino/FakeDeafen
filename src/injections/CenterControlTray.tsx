@@ -1,10 +1,21 @@
+import { webpack } from "replugged";
+import { SettingValues } from "../index";
 import CenterTrayButton from "../Components/CenterTrayButton";
 import { PluginInjector } from "../index";
 import Modules from "../lib/requiredModules";
 import Utils from "../lib/utils";
 import Types from "../types";
+import { defaultSettings } from "../lib/consts";
+
 export default (): void => {
-  PluginInjector.after(Modules.CenterControlTray, "default", (_args, res: Types.ReactTree) => {
+  const { CenterControlTray } = Modules;
+  const loader = webpack.getFunctionKeyBySource(
+    CenterControlTray,
+    "CenterControlTray: currentUser cannot be undefined",
+  );
+
+  PluginInjector.after(CenterControlTray, loader, (_args, res: Types.ReactTree) => {
+    if (!SettingValues.get("centerTray", defaultSettings.centerTray)) return res;
     const Container = Utils.findInReactTree(
       res,
       (c: Types.ReactTree) => Array.isArray(c?.props?.children) && c.type === "div",
