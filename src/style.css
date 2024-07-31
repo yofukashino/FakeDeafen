@@ -1,6 +1,14 @@
+[class^="panels_"] > [class^="container_"] > [class^="avatarWrapper_"] {
+  flex-shrink: 0;
+  flex-grow: 1;
+  flex-basis: 0px;
+  min-width: 0px;
+}
+
 [class^="panels_"] > [class^="container_"] > [class^="avatarWrapper_"] + div {
-  min-width: 0;
-  flex: 1 1 min-content !important;
+  flex-shrink: 1;
+  flex-grow: 0;
+  justify-content: flex-end;
 }
 
 .keybindRecorder-container:not(:hover) .closeButton {
