@@ -40,9 +40,12 @@ Modules.loadModules = async (): Promise<void> => {
     });
 
   Modules.CenterControlTray ??= await webpack
-    .waitForModule<Types.CenterControlTray>(webpack.filters.bySource('.BROADCAST="BROADCAST"'), {
-      timeout: 10000,
-    })
+    .waitForModule<Types.CenterControlTray>(
+      webpack.filters.bySource(".VOICE_CONTROL_TRAY,children"),
+      {
+        timeout: 10000,
+      },
+    )
     .catch(() => {
       throw new Error("Failed To Find CenterControlTray Module");
     });

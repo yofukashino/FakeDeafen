@@ -12,7 +12,7 @@ import Listeners from "./listeners/index";
 
 export const start = (): void => {
   Settings.registerSettings();
-  void Injections.applyInjections();
+  void Injections.applyInjections().catch((err) => PluginLogger.error(err));
   void Listeners.addListeners();
 };
 
