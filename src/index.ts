@@ -21,6 +21,6 @@ export const stop = (): void => {
   Listeners.removeListeners();
 };
 
-export { default as _addPanelButton } from "./Components/AccountDetailsButton";
-
 export { Settings } from "./Components/Settings.jsx";
+
+export { _addPanelButton, _addProfileItem } from "./plaintextFunctions";

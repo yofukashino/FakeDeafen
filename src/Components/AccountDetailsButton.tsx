@@ -6,7 +6,7 @@ import { defaultSettings } from "../lib/consts";
 import FakeDeafenContextMenu from "./ContextMenu";
 import Icons from "../Components/Icons";
 import Utils from "../lib/utils";
-export const AccountDetailsButton = () => {
+export default () => {
   if (
     !SettingValues.get("userPanel", defaultSettings.userPanel) ||
     plugins.getDisabled().includes("dev.tharki.FakeDeafen")
@@ -43,4 +43,3 @@ export const AccountDetailsButton = () => {
     />
   );
 };
-export default () => (Modules.PanelButton ? <AccountDetailsButton /> : <></>);

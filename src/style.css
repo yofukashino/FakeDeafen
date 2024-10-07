@@ -15,3 +15,9 @@
   color: var(----interactive-hover);
   display: none;
 }
+
+#profileDivider {
+  background-color: var(--profile-body-divider-color);
+  height: 1px;
+  margin: 8px 4px;
+}

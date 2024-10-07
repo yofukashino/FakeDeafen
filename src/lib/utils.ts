@@ -51,6 +51,16 @@ export const toggleSoundStatus = (enabled: boolean): void => {
   PluginLogger.log(enabled ? "Disabled Fake Voice State" : "Enabled Fake Voice State");
   SettingValues.set("enabled", !enabled);
 };
+export const useSoundStatus = (): [boolean, () => void] => {
+  const [enabled, setEnabled] = React.useState(
+    SettingValues.get("enabled", defaultSettings.enabled),
+  );
+  const toogleEnabled = (): void => {
+    toggleSoundStatus(enabled);
+    setEnabled(SettingValues.get("enabled", defaultSettings.enabled));
+  };
+  return [enabled, toogleEnabled];
+};
 export const useSetting = <
   T extends Record<string, Types.Jsonifiable>,
   D extends keyof T,
@@ -130,6 +140,7 @@ export default {
   forceRerenderElement,
   updateSoundStatus,
   toggleSoundStatus,
+  useSoundStatus,
   useSetting,
   useSettingArray,
 };

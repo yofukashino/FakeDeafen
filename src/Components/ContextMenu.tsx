@@ -23,7 +23,7 @@ export default (props: Types.MenuProps | { onClose: Types.DefaultTypes.AnyFuncti
   return (
     <ContextMenu.ContextMenu
       {...props}
-      navId="yofukashino"
+      navId="yofukashino-fake-deafen-submenu"
       onClose={props.onClose ?? ContextMenuApi.close}>
       <ContextMenu.MenuGroup label="What to fake?">
         <ContextMenu.MenuSeparator />

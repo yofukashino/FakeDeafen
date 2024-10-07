@@ -222,6 +222,13 @@ export namespace Types {
     default: DefaultTypes.AnyFunction;
     handleToggleVideo: DefaultTypes.AnyFunction;
   }
+  export type ProfileItem = React.ComponentType<{
+    label: string;
+    id: string;
+    icon: () => React.ReactElement;
+    onClick: () => void;
+    renderSubmenu?: ({ closePopout }: { closePopout: () => void }) => React.ReactElement;
+  }>;
   export interface AccountDetailsClasses {
     accountProfilePopoutWrapper: string;
     avatar: string;
