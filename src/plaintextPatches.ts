@@ -22,7 +22,7 @@ export default [
     ],
   },
   {
-    find: ".Messages.USER_SETTINGS_SOUNDBOARD_VOLUME,",
+    find: "Soundboard Picker",
     replacements: [
       {
         match: /null==\w+\?void 0:\w+\.selfDeaf/,
