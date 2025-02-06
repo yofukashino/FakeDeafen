@@ -1,3 +1,4 @@
+import { webpack } from "replugged";
 import { React, components } from "replugged/common";
 import { SettingValues } from "../index";
 import Modules from "../lib/requiredModules";
@@ -6,7 +7,11 @@ import FakeDeafenContextMenu from "./ContextMenu";
 import Icons from "../Components/Icons";
 import Utils from "../lib/utils";
 import Types from "../types";
-const DiscordComponents = components as typeof components & { Popout: Types.Popout };
+
+const Popout = webpack.getFunctionBySource<Types.Popout>(
+  components,
+  "Unsupported animation config:",
+);
 export default (): React.ReactElement | null => {
   if (!SettingValues.get("centerTray", defaultSettings.centerTray)) return null;
   const [enabled, setEnabled] = React.useState(
@@ -27,7 +32,7 @@ export default (): React.ReactElement | null => {
     </Icons.sound>
   );
   return (
-    <DiscordComponents.Popout
+    <Popout
       renderPopout={({ closePopout }: { closePopout: Types.DefaultTypes.AnyFunction }) => {
         const { preventIdle, allowIdle } = Modules.IdleHandler!.usePreventIdle("popup");
         React.useEffect(() => {
@@ -42,7 +47,7 @@ export default (): React.ReactElement | null => {
       }}
       align="center"
       position="top"
-      animation={DiscordComponents.Popout.Animation.FADE}>
+      animation={Popout.Animation.FADE}>
       {({
         onClick: onPopoutClick,
         "aria-expanded": popoutOpen,
@@ -62,6 +67,6 @@ export default (): React.ReactElement | null => {
           />
         );
       }}
-    </DiscordComponents.Popout>
+    </Popout>
   );
 };

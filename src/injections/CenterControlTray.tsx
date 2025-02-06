@@ -1,7 +1,6 @@
 import { webpack } from "replugged";
-import { SettingValues } from "../index";
+import { PluginInjector, SettingValues } from "../index";
 import CenterTrayButton from "../Components/CenterTrayButton";
-import { PluginInjector } from "../index";
 import Modules from "../lib/requiredModules";
 import Utils from "../lib/utils";
 import Types from "../types";
