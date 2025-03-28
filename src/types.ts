@@ -379,15 +379,43 @@ export namespace Types {
     centerTray: boolean;
     playAudio: boolean;
     showToast: boolean;
-    keybind: Array<{
-      altKey: boolean;
-      code: string;
-      ctrlKey: boolean;
-      key: string;
-      keyCode: number;
-      metaKey: boolean;
-      shiftKey: boolean;
-    }>;
+    keybind: number[][];
   }
 }
 export default Types;
+
+declare global {
+  export const DiscordNative: {
+    isRenderer: boolean;
+    nativeModules: {
+      ensureModule: (
+        name:
+          | "discord_desktop_core"
+          | "discord_erlpack"
+          | "discord_game_utils"
+          | "discord_krisp"
+          | "discord_rpc"
+          | "discord_spellcheck"
+          | "discord_utils"
+          | "discord_voice"
+          | "discord_zstd",
+      ) => Promise<undefined>;
+      requireModule: (name: "discord_utils") => {
+        inputEventRegister: (
+          id: number,
+          keyCode: number[][],
+          cb: () => void,
+          /**
+           * Represents the state of input focus and key events.
+           *
+           * - `focused` is `true` by default if neither `focused` nor `blurred` is explicitly set or set to `false`.
+           * - `keydown` is `true` by default if neither `keydown` nor `keyup` is explicitly set or set to `false`.
+           *
+           */
+          options?: Partial<{ focused?: true; blurred?: true; keyup?: true; keydown?: true }>,
+        ) => void;
+        inputEventUnregister: (id: number) => void;
+      };
+    };
+  };
+}

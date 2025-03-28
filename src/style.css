@@ -11,13 +11,40 @@
   justify-content: flex-end;
 }
 
-.keybindRecorder-container:not(:hover) .closeButton {
-  color: var(----interactive-hover);
-  display: none;
+.keybindRecorder-container:not(:hover) .keybind-clear {
+  opacity: 0;
 }
-
+.keybindRecorder-container .keybind-clear[disabled] {
+  cursor: not-allowed;
+  filter: brightness(75%);
+}
+.keybind-clear {
+  opacity: 1;
+  position: absolute;
+  right: -15px;
+  top: -15px;
+  background-image: url("https://discord.com/assets/cc9937ea92f932c3.svg");
+  background-color: var(--button-danger-background);
+  text-indent: 9999em;
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  border-radius: 50%;
+  transition: opacity 0.1s ease-in-out, box-shadow 0.1s ease-in-out, transform 0.2s ease;
+  box-shadow: var(--legacy-elevation-border), var(--legacy-elevation-low);
+}
 #profileDivider {
   background-color: var(--profile-body-divider-color);
   height: 1px;
   margin: 8px 4px;
+}
+
+.fakeDeafen-voicePanel {
+  padding: 4px;
+  gap: 8px;
+  border-radius: 12px;
+  border: 1px solid var(--border-faint);
+  background: var(--primary-630);
 }

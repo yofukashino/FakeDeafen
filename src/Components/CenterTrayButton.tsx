@@ -57,7 +57,7 @@ export default (): React.ReactElement | null => {
       }) => {
         return (
           <Modules.CenterControlButton
-            className="controlButton_ab2899"
+            className="fakeDeafen-voicePanel"
             iconComponent={() => (enabled ? DisabledIcon : Icon)}
             isActive={enabled}
             label={`${enabled ? "Unfake" : "Fake"} VC Status`}

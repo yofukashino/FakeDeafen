@@ -1,17 +1,29 @@
-import Modules from "../lib/requiredModules";
-import { cleanKeybindsCallback } from "./CleanCallback";
-import { keybindListener } from "./KeybindListener";
+import { toast as Toasts } from "replugged/common";
+import { SettingValues } from "../index";
+import { defaultSettings } from "../lib/consts";
+import Utils from "../lib/utils";
+import Listeners from "../lib/Keybind";
 
-export const addListeners = async (): Promise<void> => {
-  await Modules.loadModules();
-  Modules.WindowStore?.addChangeListener(cleanKeybindsCallback);
-  window.addEventListener("keydown", keybindListener);
-  window.addEventListener("keyup", keybindListener);
+const KeybindListener = new Listeners();
+
+export const addListeners = (): void => {
+  const KeyCode = SettingValues.get("keybind", defaultSettings.keybind);
+  // Should i make this global?
+  if (KeyCode.length)
+    KeybindListener.addListener(KeyCode, () => {
+      const enabled = SettingValues.get("enabled", defaultSettings.enabled);
+      if (SettingValues.get("showToast", defaultSettings.showToast))
+        Toasts.toast(`${enabled ? "Unfaked" : "Faked"} VC Status`, Toasts.Kind.SUCCESS);
+      Utils.toggleSoundStatus(enabled);
+    });
 };
 export const removeListeners = (): void => {
-  Modules.WindowStore.removeChangeListener(cleanKeybindsCallback);
-  window.removeEventListener("keydown", keybindListener);
-  window.removeEventListener("keyup", keybindListener);
+  KeybindListener.unlistenAll();
 };
 
-export default { addListeners, removeListeners };
+export const renewListeners = (): void => {
+  removeListeners();
+  addListeners();
+};
+
+export default { addListeners, removeListeners, renewListeners };

@@ -1,7 +1,6 @@
 import { webpack } from "replugged";
 import { React } from "replugged/common";
 import { FormItem } from "replugged/components";
-import Icons from "./Icons";
 import Types from "../types";
 
 export default (props: Types.KeybindRecorderItemProps) => {
@@ -12,12 +11,22 @@ export default (props: Types.KeybindRecorderItemProps) => {
       defaultValue: number[][];
     }>
   >("handleComboChange");
-  props.clearable = props.clearable ?? true;
+  props.clearable ??= true;
   const [value, setValue] = React.useState<Array<Array<number>>>(props.value);
-  const clear = () => {
-    setValue([]);
-    props.onChange([]);
-  };
+  const [isRecording, setRecording] = React.useState(false);
+  const handleState = React.useCallback((node) => {
+    if (node) {
+      const nodeSetState = node.setState.bind(node);
+      node.setState = (state, ...args) => {
+        setRecording(state.mode === "RECORDING");
+        nodeSetState(state, ...args);
+      };
+    }
+  }, []);
+  const handleChange = React.useCallback((value) => {
+    setValue(value);
+    props.onChange(value);
+  }, []);
   return (
     <FormItem
       title={props.title}
@@ -28,29 +37,20 @@ export default (props: Types.KeybindRecorderItemProps) => {
       <div
         className="keybindRecorder-container"
         style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
+          position: "relative",
         }}>
-        <div style={{ flexGrow: 1 }}>
-          <KeybindRecorder
-            disabled={props.disabled}
-            defaultValue={value}
-            onChange={(newValue) => {
-              setValue(newValue);
-              props.onChange(newValue);
-            }}
-          />
-        </div>
+        <KeybindRecorder
+          ref={handleState}
+          disabled={props.disabled}
+          defaultValue={value}
+          onChange={handleChange}
+        />
         {props.clearable && value.length > 0 && (
-          <div
-            style={{
-              marginLeft: "5px",
-              color: "var(--interactive-normal)",
-              cursor: "pointer",
-            }}>
-            <Icons.closeButton className="closeButton" onClick={clear} />
-          </div>
+          <button
+            className="keybind-clear"
+            onClick={() => handleChange([])}
+            disabled={isRecording}
+          />
         )}
       </div>
     </FormItem>
