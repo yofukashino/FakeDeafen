@@ -8,7 +8,7 @@ const KeybindListener = new Listeners();
 
 export const addListeners = (): void => {
   const KeyCode = SettingValues.get("keybind", defaultSettings.keybind);
-  // Should i make this global?
+  // Not Global Because https://discord.com/channels/919649417005506600/919727473233649674/1355126497580417044
   if (KeyCode.length)
     KeybindListener.addListener(KeyCode, () => {
       const enabled = SettingValues.get("enabled", defaultSettings.enabled);
