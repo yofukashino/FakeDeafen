@@ -17,7 +17,7 @@ export default [
       {
         match: /className:\w+\.buttons,style:\w+,children:\[/,
         replace: (prefix) =>
-          `${prefix}replugged.plugins.getExports("dev.tharki.ReGameActivityToggle")?._addPanelButton?.()??null,`,
+          `${prefix}replugged.plugins.getExports("dev.tharki.FakeDeafen")?._addPanelButton?.()??null,`,
       },
     ],
   },
