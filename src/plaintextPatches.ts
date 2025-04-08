@@ -15,7 +15,7 @@ export default [
     find: "isCopiedStreakGodlike",
     replacements: [
       {
-        match: /className:\w+\.buttons,style:\w+,children:\[/,
+        match: /className:.{1,3}\.buttons,style:\w+,children:\[/,
         replace: (prefix) =>
           `${prefix}replugged.plugins.getExports("dev.tharki.FakeDeafen")?._addPanelButton?.()??null,`,
       },
