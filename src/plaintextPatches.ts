@@ -2,7 +2,7 @@ import Types from "./types";
 
 export default [
   {
-    find: "AccountProfilePopout",
+    find: ".statusPickerModalMenu,",
     replacements: [
       {
         match: /\(0,\w+\.jsx\)\((\w+\.\w+),{id:"switch-accounts/,
